@@ -34,7 +34,7 @@ App.EnhancedConfigsMixin = Em.Mixin.create({
    * for not default config groups
    * @type {boolean}
    */
-  forceUpdateBoundaries: false,
+  forceUpdateBoundaries: true,
 
   /**
    * flag is true when Ambari changes some of the dependent properties
