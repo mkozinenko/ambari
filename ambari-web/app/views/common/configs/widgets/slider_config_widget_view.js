@@ -81,10 +81,30 @@ App.SliderConfigWidgetView = App.ConfigWidgetView.extend({
    * @type {Number}
    */
   maxMirrorValue: function() {
-    var parseFunction = this.get('mirrorValueParseFunction');
-    var maximum = this.getValueAttributeByGroup('maximum');
-    var max = this.widgetValueByConfigAttributes(maximum);
-    return parseFunction(max);
+      var parseFunction = this.get('mirrorValueParseFunction');
+      if (this.get('parentView.service.serviceName') != "CASSANDRA_FRAMEWORK") {
+          var maximum = this.getValueAttributeByGroup('maximum');
+          var max = this.widgetValueByConfigAttributes(maximum);
+          return parseFunction(max);
+      } else {
+          var getApiUrl = App.apiPrefix + '/clusters/' + App.clusterName + '/services/MESOS/components/MESOS_SLAVE?fields=ServiceComponentInfo/total_count';
+          console.log("TEST: " + getApiUrl);
+          var getMaxVal = function() {
+              return $.ajax({
+                  type: "GET",
+                  async: false,
+                  dataType: 'json',
+                  url: getApiUrl
+              }).done(function(values){
+                  var maximum = values.ServiceComponentInfo.total_count;
+                  console.log("TEST: 1 " + maximum);
+              });
+          };
+          var apiResponse = getMaxVal();
+          var maximum = JSON.parse(apiResponse["responseText"]).ServiceComponentInfo.total_count;
+          var max = this.widgetValueByConfigAttributes(maximum);
+          return parseFunction(max);
+      }
   }.property('config.stackConfigProperty.valueAttributes.maximum', 'controller.forceUpdateBoundaries'),
 
   /**
