@@ -146,7 +146,8 @@ public interface Resource {
     Theme,
     HostKerberosIdentity,
     Credential,
-    KerberosDescriptor;
+    KerberosDescriptor,
+    QuickLink;
 
     /**
      * Get the {@link Type} that corresponds to this InternalType.
@@ -249,6 +250,7 @@ public interface Resource {
     public static final Type Artifact = InternalType.Artifact.getType();
     public static final Type Theme = InternalType.Theme.getType();
     public static final Type Widget = InternalType.Widget.getType();
+    public static final Type QuickLink = InternalType.QuickLink.getType();
     public static final Type WidgetLayout = InternalType.WidgetLayout.getType();
     public static final Type ActiveWidgetLayout = InternalType.ActiveWidgetLayout.getType();
     public static final Type HostKerberosIdentity = InternalType.HostKerberosIdentity.getType();

@@ -167,6 +167,8 @@ public abstract class AbstractControllerResourceProvider extends AbstractResourc
         return new ActiveWidgetLayoutResourceProvider(managementController);
       case WidgetLayout:
         return new WidgetLayoutResourceProvider(managementController);
+      case QuickLink:
+        return new QuickLinkArtifactResourceProvider(managementController);
       case Widget:
         return new WidgetResourceProvider(managementController);
       case HostKerberosIdentity:

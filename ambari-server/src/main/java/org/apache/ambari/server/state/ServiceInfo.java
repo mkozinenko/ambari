@@ -41,11 +41,13 @@ import org.apache.ambari.server.stack.Validable;
 import org.apache.ambari.server.state.stack.MetricDefinition;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonFilter("propertiesfilter")
 public class ServiceInfo implements Validable{
-
+    private final static Logger LOG = LoggerFactory.getLogger(ServiceInfo.class);
   /**
    * Format version. Added at schema ver 2
    */
@@ -187,6 +189,18 @@ public class ServiceInfo implements Validable{
 
   @XmlTransient
   private volatile Map<String, ThemeInfo> themesMap;
+
+  @JsonIgnore
+  @XmlElement(name = "quickLinksConfigurations-dir")
+  private String quickLinksConfigurationsDir = AmbariMetaInfo.SERVICE_QUICKLINKS_CONFIGURATIONS_FOLDER_NAME;
+
+  @JsonIgnore
+  @XmlElementWrapper(name = "quickLinksConfigurations")
+  @XmlElements(@XmlElement(name = "quickLinksConfiguration"))
+  private List<QuickLinksConfigurationInfo> quickLinksConfigurations;
+
+  @XmlTransient
+  private volatile Map<String, QuickLinksConfigurationInfo> quickLinksConfigurationsMap;
 
 
   /**
@@ -735,4 +749,45 @@ public class ServiceInfo implements Validable{
   public void setThemesMap(Map<String, ThemeInfo> themesMap) {
     this.themesMap = themesMap;
   }
+
+    //Quick links configurations
+    public String getQuickLinksConfigurationsDir() {
+        return quickLinksConfigurationsDir;
+    }
+
+    public void setQuickLinksConfigurationsDir(String quickLinksConfigurationsDir) {
+        this.quickLinksConfigurationsDir = quickLinksConfigurationsDir;
+    }
+
+    public List<QuickLinksConfigurationInfo> getQuickLinksConfigurations() {
+        return quickLinksConfigurations;
+    }
+
+    public void setQuickLinksConfigurations(List<QuickLinksConfigurationInfo> quickLinksConfigurations) {
+        this.quickLinksConfigurations = quickLinksConfigurations;
+    }
+
+    public Map<String, QuickLinksConfigurationInfo> getQuickLinksConfigurationsMap() {
+        if (quickLinksConfigurationsMap == null) {
+            synchronized (this) {
+            }
+            if (quickLinksConfigurationsMap == null) {
+                Map<String, QuickLinksConfigurationInfo> tmp = new TreeMap<String, QuickLinksConfigurationInfo>();
+                if (quickLinksConfigurations != null) {
+                    for (QuickLinksConfigurationInfo quickLinksConfiguration : quickLinksConfigurations) {
+                        tmp.put(quickLinksConfiguration.getFileName(), quickLinksConfiguration);
+                    }
+                }
+                quickLinksConfigurationsMap = tmp;
+            }
+        }
+
+        LOG.info("quickLinksConfigurationsMap -> "+quickLinksConfigurationsMap);
+
+        return quickLinksConfigurationsMap;
+    }
+
+    public void setQuickLinksConfigurationsMap(Map<String, QuickLinksConfigurationInfo> quickLinksConfigurationsMap) {
+        this.quickLinksConfigurationsMap = quickLinksConfigurationsMap;
+    }
 }
