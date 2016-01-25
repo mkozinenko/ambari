@@ -22,6 +22,9 @@ public class Link {
     @JsonProperty("url")
     private String url;
 
+    @JsonProperty("target")
+    private String target;
+
     @JsonProperty("template")
     private String template;
 
@@ -44,12 +47,20 @@ public class Link {
         this.label = label;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public String getTarget() {
+        return target;
     }
 
     public String getTemplate() {
@@ -96,6 +107,9 @@ public class Link {
 
         if(null == url && null != parentLink.getUrl())
             url = parentLink.getUrl();
+
+        if(null == target && null != parentLink.getTarget())
+            target = parentLink.getTarget();
 
         if(null == template && null != parentLink.getTemplate())
             template = parentLink.getTemplate();
