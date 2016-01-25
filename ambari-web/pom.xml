@@ -215,11 +215,13 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
         <configuration>
           <excludes>
+            <exclude>**/*</exclude>
             <exclude>.idea/**</exclude>
             <exclude>package.json</exclude>
             <exclude>public/**</exclude>
@@ -240,6 +242,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.vafer</groupId>
         <artifactId>jdeb</artifactId>
