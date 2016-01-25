@@ -37,6 +37,10 @@
                       </ul>
                     </li>
                   {{/each}}
+                {{else}}
+                  {{#each view.quickLinks}}
+                    <li><a {{bindAttr href="url"}} {{bindAttr target="target"}}>{{label}}</a></li>
+                  {{/each}}
                 {{/if}}
               {{else}}
                 {{view App.SpinnerView}}

@@ -270,7 +270,6 @@ App.QuickViewLinks = Em.View.extend({
         var hasQuickLinks = this.hasQuickLinksConfig(serviceName);
         this.set('hasQuickLinksConfiged', hasQuickLinks); // no need to set quicklinks if current service does not have quick links configured...
 
-//this.getQuickLinksConfiguration().get('links').get('label')
         var result = App.QuickLinksConfig.find().findProperty('id', serviceName);
 
         var links = result.get("links");
