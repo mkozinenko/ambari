@@ -37,10 +37,10 @@
     <package.log.dir>/var/log/python-client</package.log.dir>
     <package.pid.dir>/var/run/python-client</package.pid.dir>
     <skipTests>false</skipTests>
-    <install.dir>/usr/lib/python2.6/site-packages/ambari_client</install.dir>
+    <install.dir>/usr/lib/python2.7/site-packages/ambari_client</install.dir>
     <lib.dir>/usr/lib/ambari-client/lib</lib.dir>
-    <python.ver>python &gt;= 2.6</python.ver>
-    <deb.python.ver>python (&gt;= 2.6)</deb.python.ver>
+    <python.ver>python &gt;= 2.7</python.ver>
+    <deb.python.ver>python (&gt;= 2.7)</deb.python.ver>
     <deb.architecture>amd64</deb.architecture>
     <deb.dependency.list>openssl, zlibc, ${deb.python.ver}</deb.dependency.list>
   </properties>
