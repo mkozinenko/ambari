@@ -43,7 +43,6 @@
     <deb.python.ver>python (&gt;= 2.7)</deb.python.ver>
     <deb.architecture>amd64</deb.architecture>
     <deb.dependency.list>openssl, zlibc, ${deb.python.ver}</deb.dependency.list>
-    <buildNumber>2.2.0</buildNumber>
   </properties>
   <build>
     <plugins>
@@ -129,7 +128,6 @@
           <copyright>2012, Apache Software Foundation</copyright>
           <group>Development</group>
           <description>Maven Recipe: RPM Package.</description>
-	  <release>${buildNumber}</release>
           <requires>
             <require>openssl</require>
             <require>zlib</require>
