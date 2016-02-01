@@ -124,7 +124,7 @@
             <configuration>
               <name>ambariVersion</name>
               <value>${project.version}</value>
-              <regex>^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)(\.|-).*</regex>
+              <regex>^([0-9]+)\.([0-9]+)\.([0-9]+)(\.|-).*</regex>
               <replacement>$1.$2.$3.$4</replacement>
               <failIfNoMatch>false</failIfNoMatch>
             </configuration>
@@ -184,7 +184,7 @@
             <configuration>
               <name>package-version</name>
               <value>${project.version}</value>
-              <regex>^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)(\.|-).*</regex>
+              <regex>^([0-9]+)\.([0-9]+)\.([0-9]+)(\.|-).*</regex>
               <replacement>$1.$2.$3.$4</replacement>
               <failIfNoMatch>true</failIfNoMatch>
             </configuration>
@@ -256,6 +256,7 @@
         <artifactId>apache-rat-plugin</artifactId>
         <configuration>
           <excludes>
+            <exclude>**/*</exclude>
             <exclude>pass.txt</exclude>
             <exclude>derby.log</exclude>
             <exclude>**/*.nuspec</exclude>
