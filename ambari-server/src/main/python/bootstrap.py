@@ -229,7 +229,11 @@ class Bootstrap(threading.Thread):
     if ambari_version is None or ambari_version == "null":
       return ""
     else:
-      return ambari_version
+      #return ambari_version
+      if "-" in ambari_version:
+        return ambari_version.split("-")[0]
+      else:
+        return ambari_version
 
   def createDoneFile(self, retcode):
     """ Creates .done file for current host. These files are later read from Java code.
