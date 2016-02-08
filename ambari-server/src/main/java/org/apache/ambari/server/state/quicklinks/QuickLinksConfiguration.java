@@ -57,17 +57,17 @@ public class QuickLinksConfiguration {
         Map<String, Link> mergedLinks = new HashMap<String, Link>();
 
         for (Link parentLink : parentLinks) {
-            mergedLinks.put(parentLink.getName(), parentLink);
+            mergedLinks.put(parentLink.getLabel(), parentLink);
         }
 
         for (Link childLink : childLinks) {
             if (childLink.getName() != null) {
                 if(childLink.isRemoved()){
-                    mergedLinks.remove(childLink.getName());
+                    mergedLinks.remove(childLink.getLabel());
                 } else {
-                    Link parentLink = mergedLinks.get(childLink.getName());
+                    Link parentLink = mergedLinks.get(childLink.getLabel());
                     childLink.mergeWithParent(parentLink);
-                    mergedLinks.put(childLink.getName(), childLink);
+                    mergedLinks.put(childLink.getLabel(), childLink);
                 }
             }
         }
