@@ -34,6 +34,8 @@ public class QuickLinkArtifactResourceProvider extends AbstractControllerResourc
     public static final String STACK_SERVICE_NAME_PROPERTY_ID = PropertyHelper.getPropertyId("QuickLinkInfo", "service_name");
     public static final String QUICKLINK_DEFAULT_PROPERTY_ID = PropertyHelper.getPropertyId("QuickLinkInfo", "default");
     public static final String QUICKLINK_FILE_NAME_PROPERTY_ID = PropertyHelper.getPropertyId("QuickLinkInfo", "file_name");
+    public static final String QUICKLINK_CONSUL_URL_PROPERTY_ID = PropertyHelper.getPropertyId("QuickLinkInfo", "consul_url");
+    public static final String QUICKLINK_CONSUL_KEY_PROPERTY_ID = PropertyHelper.getPropertyId("QuickLinkInfo", "consul_key");
     public static final String QUICKLINK_DATA_PROPERTY_ID = PropertyHelper.getPropertyId("QuickLinkInfo", "quicklink_data");
 
     /**
@@ -64,6 +66,8 @@ public class QuickLinkArtifactResourceProvider extends AbstractControllerResourc
         propertyIds.add(STACK_VERSION_PROPERTY_ID);
         propertyIds.add(STACK_SERVICE_NAME_PROPERTY_ID);
         propertyIds.add(QUICKLINK_FILE_NAME_PROPERTY_ID);
+        propertyIds.add(QUICKLINK_CONSUL_URL_PROPERTY_ID);
+        propertyIds.add(QUICKLINK_CONSUL_KEY_PROPERTY_ID);
         propertyIds.add(QUICKLINK_DATA_PROPERTY_ID);
         propertyIds.add(QUICKLINK_DEFAULT_PROPERTY_ID);
     }
@@ -171,6 +175,8 @@ public class QuickLinkArtifactResourceProvider extends AbstractControllerResourc
                     Resource resource = new ResourceImpl(Resource.Type.QuickLink);
                     Set<String> requestedIds = getRequestPropertyIds(request, predicate);
                     setResourceProperty(resource, QUICKLINK_FILE_NAME_PROPERTY_ID, quickLinksConfigurationInfo.getFileName(), requestedIds);
+                    setResourceProperty(resource, QUICKLINK_CONSUL_URL_PROPERTY_ID, quickLinksConfigurationInfo.getConsulUrl(), requestedIds);
+                    setResourceProperty(resource, QUICKLINK_CONSUL_KEY_PROPERTY_ID, quickLinksConfigurationInfo.getConsulKey(), requestedIds);
                     setResourceProperty(resource, QUICKLINK_DATA_PROPERTY_ID, quickLinksConfigurationInfo.getQuickLinksConfigurationMap(), requestedIds);
                     setResourceProperty(resource, QUICKLINK_DEFAULT_PROPERTY_ID, quickLinksConfigurationInfo.getIsDefault(), requestedIds);
                     setResourceProperty(resource, STACK_NAME_PROPERTY_ID, stackName, requestedIds);

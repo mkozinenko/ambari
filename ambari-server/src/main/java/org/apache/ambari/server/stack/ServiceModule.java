@@ -349,6 +349,7 @@ public class ServiceModule extends BaseModule<ServiceModule, ServiceInfo> implem
         if (serviceInfo.getQuickLinksConfigurations() != null) {
             for (QuickLinksConfigurationInfo quickLinksConfigurationInfo : serviceInfo.getQuickLinksConfigurations()) {
                 File file = new File(quickLinksConfigurationsDir + File.separator + quickLinksConfigurationInfo.getFileName());
+//                QuickLinksConfigurationModule module = new QuickLinksConfigurationModule(file, quickLinksConfigurationInfo, serviceInfo);
                 QuickLinksConfigurationModule module = new QuickLinksConfigurationModule(file, quickLinksConfigurationInfo);
                 quickLinksConfigurationModules.put(module.getId(), module);
             }

@@ -43,6 +43,10 @@ public class Links {
         this.links = links;
     }
 
+    public void add(Link link){
+        this.links.add(link);
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);

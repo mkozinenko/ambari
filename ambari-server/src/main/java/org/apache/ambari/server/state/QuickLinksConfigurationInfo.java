@@ -15,6 +15,8 @@ import java.util.Map;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class QuickLinksConfigurationInfo {
     private String fileName;
+    private String consulUrl;
+    private String consulKey;
     @XmlElement(name = "default")
     private Boolean isDefault = false;
     private Boolean deleted = false;
@@ -38,6 +40,8 @@ public class QuickLinksConfigurationInfo {
         return "QuickLinksConfigurationInfo{" +
                 "deleted=" + deleted +
                 ", fileName='" + fileName + '\'' +
+                ", consulUrl='" + consulUrl + '\'' +
+                ", consulKey='" + consulKey + '\'' +
                 ", isDefault=" + isDefault +
                 ", quickLinksConfigurationMap=" + quickLinksConfigurationMap +
                 '}';
@@ -49,6 +53,22 @@ public class QuickLinksConfigurationInfo {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getConsulUrl() {
+        return consulUrl;
+    }
+
+    public void setConsulUrl(String consulUrl) {
+        this.consulUrl = consulUrl;
+    }
+
+    public String getConsulKey() {
+        return consulKey;
+    }
+
+    public void setConsulKey(String consulKey) {
+        this.consulKey = consulKey;
     }
 
     public Boolean getIsDefault() {
