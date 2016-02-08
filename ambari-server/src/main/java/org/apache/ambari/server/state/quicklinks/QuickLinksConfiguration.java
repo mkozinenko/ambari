@@ -61,7 +61,7 @@ public class QuickLinksConfiguration {
         }
 
         for (Link childLink : childLinks) {
-            if (childLink.getName() != null) {
+            if (childLink.getName() != null && childLink.getLabel() != null) {
                 if(childLink.isRemoved()){
                     mergedLinks.remove(childLink.getLabel());
                 } else {
