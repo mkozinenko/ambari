@@ -402,7 +402,7 @@ App.MainAlertDefinitionsView = App.TableView.extend({
     fieldType: 'filter-input-width',
     template: Ember.Handlebars.compile(
       '<div class="btn-group display-inline-block">' +
-        '<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">' +
+        '<a class="btn btn-raised btn-default dropdown-toggle" data-toggle="dropdown" href="#">' +
           '<span class="filters-label">Groups:&nbsp;&nbsp;</span>' +
           '<span>{{view.selected.label}}&nbsp;<span class="caret"></span></span>' +
         '</a>' +

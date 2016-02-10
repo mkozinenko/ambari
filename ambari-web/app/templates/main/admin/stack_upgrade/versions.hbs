@@ -19,7 +19,7 @@
 
 <div>
   <div class="btn-group display-inline-block">
-    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+    <a class="btn btn-raised btn-default dropdown-toggle" data-toggle="dropdown" href="#">
       <span class="filters-label">{{t common.filter}}: </span>
             <span>
               {{view.selectedCategory.label}}
@@ -37,7 +37,7 @@
     </ul>
   </div>
   {{#isAccessible upgrade_ONLY_ADMIN}}
-    <button class="btn btn-primary pull-right" {{action goToVersions target="view"}} id="manage-versions-link">
+    <button class="btn btn-raised btn-warn" {{action goToVersions target="view"}} id="manage-versions-link">
       <i class="icon-external-link"></i>&nbsp;{{t admin.stackVersions.manageVersions}}
     </button>
   {{/isAccessible}}

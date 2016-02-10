@@ -17,75 +17,77 @@
 }}
 
 <div id="config_history">
-  <table class="table advanced-header-table table-bordered table-striped" >
-    <thead>
-    {{#view view.sortView classNames="label-row config-history-sort-row"}}
-      {{view view.parentView.versionSort}}
-      {{view view.parentView.configGroupSort}}
-      {{view view.parentView.modifiedSort}}
-      {{view view.parentView.authorSort}}
-      {{view view.parentView.notesSort}}
-    {{/view}}
+  <div class="well well-sm-sm">
+    <table class="table advanced-header-table table-bordered table-striped" >
+      <thead>
+      {{#view view.sortView classNames="label-row config-history-sort-row"}}
+        {{view view.parentView.versionSort}}
+        {{view view.parentView.configGroupSort}}
+        {{view view.parentView.modifiedSort}}
+        {{view view.parentView.authorSort}}
+        {{view view.parentView.notesSort}}
+      {{/view}}
 
-    <tr class="filter-row config-history-filter-row">
-      <th class="first cg-service">{{view view.serviceFilterView}}</th>
-      <th class="cg-name">{{view view.configGroupFilterView}}</th>
-      <th class="cg-created">{{view view.modifiedFilterView}}</th>
-      <th class="cg-author">{{view view.authorFilterView}}</th>
-      <th class="cg-notes">{{view view.notesFilterView}}</th>
-    </tr>
-    </thead>
-    <tbody class="services-menu">
-    {{#if view.filteringComplete}}
-      {{#if view.pageContent}}
-        {{#each item in view.pageContent}}
-          {{#view view.ConfigVersionView contentBinding="item"}}
-            <td class="first">
-              <span class="label label-info">{{item.versionText}}</span>
-              <a {{action goToServiceConfigs item}} class="service-name">
-                {{item.displayName}}
-              </a>
-              <i {{bindAttr class=":icon-refresh :restart-required-service item.isRestartRequired::hidden"}}
-                rel="Tooltip" {{translateAttr data-original-title="dashboard.configHistory.table.restart.tooltip"}}></i>
-            </td>
-            <td>{{item.configGroupName}}
-              {{#if item.isCurrent}}
-                <span class="label label-success" rel="Tooltip"
-                {{bindAttr data-original-title="item.currentTooltip"}}>{{t common.current}}
-                </span>
-              {{/if}}
-            </td>
-            <td>{{item.createdDate}}</td>
-            <td><span rel="Tooltip" {{bindAttr title="item.author"}}>{{item.authorFormatted}}</span></td>
-            <td class="notes">
-              {{#if item.moreNotesExists}}
-                {{#if view.showLessNotes}}
-                  {{item.briefNotes}}
-                  <a {{action toggleShowLessStatus target="view"}} class="show-more-button">>> More</a>
-                {{else}}
-                  {{item.fullNotes}}
-                  <a {{action toggleShowLessStatus target="view"}} class="show-more-button"><< Less</a>
+      <tr class="filter-row config-history-filter-row">
+        <th class="first cg-service">{{view view.serviceFilterView}}</th>
+        <th class="cg-name">{{view view.configGroupFilterView}}</th>
+        <th class="cg-created">{{view view.modifiedFilterView}}</th>
+        <th class="cg-author">{{view view.authorFilterView}}</th>
+        <th class="cg-notes">{{view view.notesFilterView}}</th>
+      </tr>
+      </thead>
+      <tbody class="services-menu">
+      {{#if view.filteringComplete}}
+        {{#if view.pageContent}}
+          {{#each item in view.pageContent}}
+            {{#view view.ConfigVersionView contentBinding="item"}}
+              <td class="first">
+                <span class="label label-info">{{item.versionText}}</span>
+                <a {{action goToServiceConfigs item}} class="service-name">
+                  {{item.displayName}}
+                </a>
+                <i {{bindAttr class=":icon-refresh :restart-required-service item.isRestartRequired::hidden"}}
+                  rel="Tooltip" {{translateAttr data-original-title="dashboard.configHistory.table.restart.tooltip"}}></i>
+              </td>
+              <td>{{item.configGroupName}}
+                {{#if item.isCurrent}}
+                  <span class="label label-success" rel="Tooltip"
+                  {{bindAttr data-original-title="item.currentTooltip"}}>{{t common.current}}
+                  </span>
                 {{/if}}
-              {{else}}
-                {{item.briefNotes}}
-              {{/if}}
+              </td>
+              <td>{{item.createdDate}}</td>
+              <td><span rel="Tooltip" {{bindAttr title="item.author"}}>{{item.authorFormatted}}</span></td>
+              <td class="notes">
+                {{#if item.moreNotesExists}}
+                  {{#if view.showLessNotes}}
+                    {{item.briefNotes}}
+                    <a {{action toggleShowLessStatus target="view"}} class="show-more-button">>> More</a>
+                  {{else}}
+                    {{item.fullNotes}}
+                    <a {{action toggleShowLessStatus target="view"}} class="show-more-button"><< Less</a>
+                  {{/if}}
+                {{else}}
+                  {{item.briefNotes}}
+                {{/if}}
+              </td>
+            {{/view}}
+          {{/each}}
+        {{else}}
+          <tr>
+            <td class="first" colspan="5">
+              {{t dashboard.configHistory.table.empty}}
             </td>
-          {{/view}}
-        {{/each}}
+          </tr>
+        {{/if}}
       {{else}}
-        <tr>
-          <td class="first" colspan="5">
-            {{t dashboard.configHistory.table.empty}}
-          </td>
-        </tr>
+        <tr><td colspan="5">{{view App.SpinnerView}}</td></tr>
       {{/if}}
-    {{else}}
-      <tr><td colspan="5">{{view App.SpinnerView}}</td></tr>
-    {{/if}}
-    </tbody>
-</table>
+      </tbody>
+  </table>
+</div>
 
-  <div class="page-bar">
+  <div class="page-bar well well-sm-sm">
     <div class="filtered-info span4">
     {{#if view.showFilteredContent}}
       <label>{{view.filteredContentInfo}} - <a {{action clearFilters target="view"}}

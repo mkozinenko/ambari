@@ -21,8 +21,9 @@ require('utils/ember_reopen');
 var stringUtils = require('utils/string_utils');
 
 module.exports = Em.Application.create({
-  name: 'Ambari Web',
+  name: 'Pangea',
   rootElement: '#wrapper',
+  LOG_TRANSITIONS: true, 
 
   store: DS.Store.create({
     revision: 4,

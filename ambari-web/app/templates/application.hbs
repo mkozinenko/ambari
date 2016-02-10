@@ -19,12 +19,11 @@
 <div id="main">
   <div id="top-nav">
     <div class="navbar navbar-static-top">
-      <div class="navbar-inner">
+      <div class="navbar-shadow">
         <div class="container main-container">
           {{#if isExistingClusterDataLoaded}}
-            <a {{translateAttr href="topnav.logo.href"}} class="logo"><img src="/img/logo-white.png" alt="Apache Ambari"
-                                                                           title="Apache Ambari"></a>
-            <a class="brand" {{translateAttr href="topnav.logo.href"}} title="Apache Ambari">{{t app.name}}</a>
+            <a {{translateAttr href="topnav.logo.href"}} class="logo"><img src="/img/pangea-logo-1.png" alt="Pangea" title="Pangea"></a>
+            <a class="brand" {{translateAttr href="topnav.logo.href"}} title="Pangea">{{t app.name}}</a>
             <a class="brand cluster-name" href="javascript:void(null);" {{bindAttr title="clusterName"}}>
               <span {{action "showPopup" target="App.router.backgroundOperationsController"}} >{{clusterDisplayName}} </span>
               {{#with App.router.backgroundOperationsController}}
@@ -43,20 +42,20 @@
                 <span {{bindAttr class=":label App.router.mainAlertDefinitionsController.isCriticalAlerts:alert-crit-count:alert-warn-count"}} {{action "showPopup" target="App.router.mainAlertInstancesController"}}>
                 {{App.router.mainAlertDefinitionsController.unhealthyAlertInstancesCount}} {{pluralize App.router.mainAlertDefinitionsController.unhealthyAlertInstancesCount singular="alert" plural="alerts"}}</span>
               {{else}}
-                <span rel="tooltip" {{translateAttr title="titlebar.alerts.noAlerts"}}
+                <span {{translateAttr title="titlebar.alerts.noAlerts"}}
                       class="label alerts-none-count" {{action "showPopup" target="App.router.mainAlertInstancesController"}}>
                 {{App.router.mainAlertDefinitionsController.unhealthyAlertInstancesCount}} {{pluralize App.router.mainAlertDefinitionsController.unhealthyAlertInstancesCount singular="alert" plural="alerts"}}</span>
               {{/if}}
             {{/if}}
             </a>
           {{else}}
-            <a class="logo"><img src="/img/logo-white.png" alt="Apache Ambari" title="Apache Ambari"></a>
-            <a class="brand" title="Apache Ambari">{{t app.name}}</a>
+            <a class="logo"><img src="/img/pangea-logo-1.png" alt="Pangea" title="Pangea"></a>
+            <a class="brand" title="Pangea">{{t app.name}}</a>
           {{/if}}
 
           {{#if App.router.loggedIn}}
             <div class="top-nav-user btn-group">
-              <button class="btn dropdown-toggle" data-toggle="dropdown">
+              <button class="btn btn-warning" data-toggle="dropdown">
                 <i class="icon-user"></i>&nbsp;{{App.router.loginName}}&nbsp;<span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
@@ -80,7 +79,7 @@
                 {{/if}}
                 {{#if isClusterDataLoaded}}
                   {{#isAccessible upgrade_ADMIN}}
-                    <li><a href="" {{action showSettingsPopup target="App.router.userSettingsController"}}>{{t app.settings}}</a></li>
+                    <li><a href="" {{action showSettingsPopup target="controller"}}>{{t app.settings}}</a></li>
                   {{/isAccessible}}
                 {{/if}}
                 {{#if showExitLink}}
@@ -102,9 +101,8 @@
       {{#if App.upgradeIsNotFinished}}
         <div class="ru-badge span12">
           <div class="navbar navbar-static-top clearfix">
-            <div class="span11">
+            <div class="span4 offset4">
               {{#if isExistingClusterDataLoaded}}
-                <p class="span4 offset4">
                 <a class="brand cluster-name" href="#">
                   {{#if App.upgradeInProgress}}
                     {{#if App.router.mainAdminStackAndUpgradeController.isDowngrade}}
@@ -130,20 +128,16 @@
                   {{/if}}
                   {{#if App.upgradeAborted}}
                     {{#if App.router.mainAdminStackAndUpgradeController.isDowngrade}}
-                      <span class="label upgrade-holding" {{action "openUpgradeDialog" target="App.router.mainAdminStackAndUpgradeController"}}>
-                        <i class="icon-pause"></i>&nbsp;{{t admin.stackVersions.version.downgrade.suspended}}
-                      </span>
+                      <span
+                              class="label upgrade-aborted" {{action "openUpgradeDialog" target="App.router.mainAdminStackAndUpgradeController"}}>
+                          <i class="icon-remove"></i>&nbsp;{{t admin.stackVersions.version.downgrade.aborted}}</span>
                     {{else}}
-                      <span class="label upgrade-holding" {{action "openUpgradeDialog" target="App.router.mainAdminStackAndUpgradeController"}}>
-                        <i class="icon-pause"></i>&nbsp;{{t admin.stackVersions.version.upgrade.suspended}}
-                      </span>
+                      <span
+                              class="label upgrade-aborted" {{action "openUpgradeDialog" target="App.router.mainAdminStackAndUpgradeController"}}>
+                          <i class="icon-remove"></i>&nbsp;{{t admin.stackVersions.version.upgrade.aborted}}</span>
                     {{/if}}
                   {{/if}}
                 </a>
-                </p>
-                {{#if App.router.mainAdminStackAndUpgradeController.isFinalizeItem}}
-                  <p class="span10 alert alert-danger">{{t admin.stackVersions.version.upgrade.notFinalized.warning}}</p>
-                {{/if}}
               {{/if}}
             </div>
           </div>

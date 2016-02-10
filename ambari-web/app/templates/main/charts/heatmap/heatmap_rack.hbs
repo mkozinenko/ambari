@@ -16,38 +16,40 @@
 * limitations under the License.
 }}
 
-<div class="rackHeader">
-  <div class="statusName clearfix">
-    <div {{bindAttr class="view.statusIndicator rack.status"}}></div>
-    <div class="rackName">{{rack.name}}</div>
+<div class="well well-sm-sm">
+  <div class="rackHeader">
+    <div class="statusName clearfix">
+      <div {{bindAttr class="view.statusIndicator rack.status"}}></div>
+      <div class="rackName">{{rack.name}}</div>
+    </div>
   </div>
-</div>
-<!--<div class="hostsSummary clearfix">-->
-  <!--<div class="textBlock">Total hosts: {{!rack.hosts.length}}</div>-->
-  <!--{{!#if view.heatmapIsOpened}}-->
-    <!--<div class="textBlock">-->
-      <!--<div class="indicatorG"></div>-->
-      <!--Hosts in live state: {{!rack.liveHostsCount}}-->
-    <!--</div>-->
-    <!--<div class="textBlock">-->
-      <!--<div class="indicatorY"></div>-->
-      <!--Hosts in critical state: {{!rack.criticalHostsCount}}-->
-    <!--</div>-->
-    <!--<div class="textBlock">-->
-      <!--<div class="indicatorR"></div>-->
-      <!--Hosts in dead state: {{!rack.deadHostsCount}}-->
-    <!--</div>-->
-  <!--{{!/if}}-->
-<!--</div>-->
-<div class="isActive hosts clearfix">
-  <div {{bindAttr  class="view.rack.isLoaded::hidden"}}>
-    {{#each view.hosts}}
-        <div {{bindAttr style="view.hostCssStyle"}}>
-          {{view App.MainChartsHeatmapHostView contentBinding="this"}}
-        </div>
-    {{/each}}
+  <!--<div class="hostsSummary clearfix">-->
+    <!--<div class="textBlock">Total hosts: {{!rack.hosts.length}}</div>-->
+    <!--{{!#if view.heatmapIsOpened}}-->
+      <!--<div class="textBlock">-->
+        <!--<div class="indicatorG"></div>-->
+        <!--Hosts in live state: {{!rack.liveHostsCount}}-->
+      <!--</div>-->
+      <!--<div class="textBlock">-->
+        <!--<div class="indicatorY"></div>-->
+        <!--Hosts in critical state: {{!rack.criticalHostsCount}}-->
+      <!--</div>-->
+      <!--<div class="textBlock">-->
+        <!--<div class="indicatorR"></div>-->
+        <!--Hosts in dead state: {{!rack.deadHostsCount}}-->
+      <!--</div>-->
+    <!--{{!/if}}-->
+  <!--</div>-->
+  <div class="isActive hosts clearfix">
+    <div {{bindAttr  class="view.rack.isLoaded::hidden"}}>
+      {{#each view.hosts}}
+          <div {{bindAttr style="view.hostCssStyle"}}>
+            {{view App.MainChartsHeatmapHostView contentBinding="this"}}
+          </div>
+      {{/each}}
+    </div>
+    {{#unless view.rack.isLoaded}}
+      {{view App.SpinnerView}}
+    {{/unless}}
   </div>
-  {{#unless view.rack.isLoaded}}
-    {{view App.SpinnerView}}
-  {{/unless}}
 </div>

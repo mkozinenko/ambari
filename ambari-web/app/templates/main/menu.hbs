@@ -15,9 +15,10 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 }}
-
-<ul class="nav nav-tabs">
-    {{#each view.items}}
-    <li {{bindAttr class="active"}} ><a {{action navigate routing }} href="#">{{unbound label}}</a></li>
-    {{/each}}
-</ul>
+<div class="navbar-shadow">
+	<ul class="nav nav-tabs">
+	    {{#each view.items}}
+	    <li {{bindAttr class="active"}} ><a {{action navigate routing }} href="#">{{unbound label}}</a></li>
+	    {{/each}}
+	</ul>
+</div>

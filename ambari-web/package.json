@@ -8,23 +8,24 @@
     "url": "https://git-wip-us.apache.org/repos/asf/ambari/repo?p=ambari.git;a=summary"
   },
   "dependencies": {
-    "javascript-brunch": ">= 1.0 < 1.5",
-    "css-brunch": ">= 1.0 < 1.5",
-    "uglify-js-brunch": ">= 1.0 < 1.5",
+    "auto-reload-brunch": "^1.8.1",
     "clean-css-brunch": ">= 1.0 < 1.5",
+    "css-brunch": ">= 1.0 < 1.5",
+    "cssstyle": "0.2.3",
     "ember-precompiler-brunch": ">= 1.0 < 1.5",
     "ember-radio-button": "0.1.2",
+    "javascript-brunch": ">= 1.0 < 1.5",
     "less-brunch": ">= 1.0 < 1.5",
-    "cssstyle": "0.2.3"
+    "uglify-js-brunch": ">= 1.0 < 1.5"
   },
   "devDependencies": {
     "phantomjs": "^1.9.2",
-    "mocha":"1.9.0",
+    "mocha": "1.9.0",
     "mocha-phantomjs": "~3.1.6",
-    "chai":"~1.9.0",
-    "sinon":"=1.7.3",
-    "sinon-chai":"~2.5.0",
-    "express":"2.5.8",
+    "chai": "~1.9.0",
+    "sinon": "=1.7.3",
+    "sinon-chai": "~2.5.0",
+    "express": "2.5.8",
     "karma": "=0.11.14",
     "karma-mocha": "0.1.1",
     "karma-chai": "~0.1.0",

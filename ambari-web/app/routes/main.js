@@ -20,6 +20,9 @@ var App = require('app');
 var stringUtils = require('utils/string_utils');
 
 module.exports = Em.Route.extend(App.RouterRedirections, {
+    debug: Em.Route.extend({
+    route: '/debug'
+  }),
   route: '/main',
   enter: function (router) {
     App.db.updateStorage();
