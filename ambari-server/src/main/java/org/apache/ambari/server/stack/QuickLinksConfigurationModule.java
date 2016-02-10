@@ -2,7 +2,12 @@ package org.apache.ambari.server.stack;
 
 import org.apache.ambari.server.AmbariException;
 import org.apache.ambari.server.state.QuickLinksConfigurationInfo;
+import org.apache.ambari.server.state.ServiceInfo;
+import org.apache.ambari.server.state.quicklinks.Link;
+import org.apache.ambari.server.state.quicklinks.Links;
 import org.apache.ambari.server.state.quicklinks.QuickLinks;
+import org.apache.ambari.server.state.quicklinks.QuickLinksConfiguration;
+import org.apache.ambari.server.utils.ConsulUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by incu6us on 1/22/16.
@@ -42,7 +43,12 @@ public class QuickLinksConfigurationModule extends BaseModule<QuickLinksConfigur
         this.moduleInfo = moduleInfo;
         if (!moduleInfo.isDeleted() && quickLinksConfigurationFile != null) {
             LOG.debug("Looking for quicklinks in {}", quickLinksConfigurationFile.getAbsolutePath());
+            ConsulUtils consul = null;
+            Links links = null;
+//            QuickLinks qlMain = null;
             FileReader reader = null;
+            QuickLinksConfiguration qlConf = null;
+
             try {
                 reader = new FileReader(quickLinksConfigurationFile);
             } catch (FileNotFoundException e) {
@@ -51,6 +57,26 @@ public class QuickLinksConfigurationModule extends BaseModule<QuickLinksConfigur
             try {
                 QuickLinks quickLinksConfig = mapper.readValue(reader, QuickLinks.class);
                 Map<String, QuickLinks> map = new HashMap<String, QuickLinks>();
+
+                // Read consul key for quicklinks
+                LOG.info("Read Consul");
+                if(moduleInfo.getConsulUrl() != null && moduleInfo.getConsulKey() != null){
+                    LOG.info("module -> "+moduleInfo.getConsulUrl());
+                    consul = new ConsulUtils(moduleInfo.getConsulUrl());
+                    LOG.info("Consul loaded");
+                    try {
+                        links = consul.getLinksConfigurationByKey(moduleInfo.getConsulKey());
+                        LOG.info("links created -> " + links.toString());
+
+                        qlConf = new QuickLinksConfiguration();
+                        qlConf.setLinks(links.getLinks());
+                        quickLinksConfig.getQuickLinksConfiguration().mergeWithParent(qlConf);
+                        LOG.info("links merged");
+                    }catch (Exception e){
+                        LOG.error("Can't load links -> "+e);
+                    }
+                }
+
                 map.put(QUICKLINKS_CONFIGURATION_KEY, quickLinksConfig);
                 moduleInfo.setQuickLinksConfigurationMap(map);
                 LOG.debug("Loaded quicklinks configuration: {}", moduleInfo);
