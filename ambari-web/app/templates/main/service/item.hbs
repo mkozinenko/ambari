@@ -16,38 +16,39 @@
 * limitations under the License.
 }}
 
-
-{{view App.MainServiceInfoMenuView configTabBinding="view.hasConfigTab" heatmapTabBinding="view.hasHeatmapTab"}}
-  <div class="span3 quick-links-wrapper">
-    {{#if view.service.quickLinks.length}}
-      {{#view App.QuickViewLinks contentBinding="view.service"}}
-            <a class="btn btn-warning" id="quick-links-dropdown-btn" data-toggle="dropdown" href="#">{{t common.quickLinks}}<b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              {{#if view.isLoaded}}
-                {{#if view.quickLinksArray}}
-                  <!--there are multiple masters eg, HBase multiple masters or HDFS HA enabled-->
-                  {{#each quickLinks in view.quickLinksArray}}
-                    <li class="dropdown-submenu">
-                      <a href="javascript:void(null)">{{quickLinks.publicHostNameLabel}} &nbsp;</a>
-                      <ul class="dropdown-menu">
-                        {{#each quickLinks}}
-                          <li><a {{bindAttr href="url"}} {{bindAttr target="view.linkTarget"}}>{{label}}</a></li>
-                        {{/each}}
-                      </ul>
-                    </li>
-                  {{/each}}
-                {{else}}
-                  {{#each view.quickLinks}}
-                    <li><a {{bindAttr href="url"}} {{bindAttr target="view.linkTarget"}}>{{label}}</a></li>
-                  {{/each}}
-                {{/if}}
+<div class="well well-sm-sm">
+  {{view App.MainServiceInfoMenuView configTabBinding="view.hasConfigTab" heatmapTabBinding="view.hasHeatmapTab"}}
+</div>
+<div class="span3 quick-links-wrapper">
+  {{#if view.service.quickLinks.length}}
+    {{#view App.QuickViewLinks contentBinding="view.service"}}
+          <a class="btn btn-warning" id="quick-links-dropdown-btn" data-toggle="dropdown" href="#">{{t common.quickLinks}}<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            {{#if view.isLoaded}}
+              {{#if view.quickLinksArray}}
+                <!--there are multiple masters eg, HBase multiple masters or HDFS HA enabled-->
+                {{#each quickLinks in view.quickLinksArray}}
+                  <li class="dropdown-submenu">
+                    <a href="javascript:void(null)">{{quickLinks.publicHostNameLabel}} &nbsp;</a>
+                    <ul class="dropdown-menu">
+                      {{#each quickLinks}}
+                        <li><a {{bindAttr href="url"}} {{bindAttr target="view.linkTarget"}}>{{label}}</a></li>
+                      {{/each}}
+                    </ul>
+                  </li>
+                {{/each}}
               {{else}}
-                <div class="spinner"></div>
+                {{#each view.quickLinks}}
+                  <li><a {{bindAttr href="url"}} {{bindAttr target="view.linkTarget"}}>{{label}}</a></li>
+                {{/each}}
               {{/if}}
-           </ul>
-      {{/view}}
-    {{/if}}
-  </div>
+            {{else}}
+              <div class="spinner"></div>
+            {{/if}}
+         </ul>
+    {{/view}}
+  {{/if}}
+</div>
 
 {{#isAccessible ADMIN}}
 <div class="service-button">

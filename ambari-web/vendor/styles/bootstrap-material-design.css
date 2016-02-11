@@ -2629,7 +2629,8 @@ fieldset[disabled] .navbar .btn-link:focus {
 }
 .dropdown-menu li a:hover {
   background-color: transparent;
-  color: #009688;
+/*  color: #009688;*/
+  color: #ffffff;
 }
 .alert {
   border: 0;
@@ -2676,7 +2677,8 @@ fieldset[disabled] .navbar .btn-link:focus {
 }
 .alert.alert-info a,
 .alert.alert-info .alert-link {
-  color: rgba(255,255,255, 0.84);
+/*  color: rgba(255,255,255, 0.84);*/
+  color: #000000;
 }
 .alert.alert-warning {
   background-color: #ff5722;

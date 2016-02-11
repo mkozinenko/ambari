@@ -51,9 +51,9 @@
     {{t common.group}}&nbsp;
 	  <span class="btn-group config-groups-dropdown">
       {{#if controller.configGroupsAreLoaded}}
-        <button {{bindAttr disabled="controller.isHostsConfigsPage"}} class="btn dropdown-toggle first"
+        <button {{bindAttr disabled="controller.isHostsConfigsPage"}} class="btn btn-raised dropdown-toggle first"
                                                                       data-toggle="dropdown">{{selectedConfigGroup.displayNameHosts}}</button>
-        <button {{bindAttr disabled="controller.isHostsConfigsPage"}} class="btn dropdown-toggle" data-toggle="dropdown">
+        <button {{bindAttr disabled="controller.isHostsConfigsPage"}} class="btn btn-raised dropdown-toggle" data-toggle="dropdown">
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu config-groups-dropdown-menu">
@@ -96,7 +96,7 @@
   {{#unless hideDependenciesInfoBar}}
     <div {{bindAttr class="hasChangedDependencies:show:hide :dependencies-info"}}>
       <div class="dependencies-info-bar-wrapper">
-        <div class="alert alert-warning">
+        <div class="alert alert-warning well well-warning">
           <span>{{dependenciesMessage}}</span> <a
             href="#" {{action "showChangedDependentConfigs" target="controller"}}>{{t common.showDetails}}</a>
         </div>

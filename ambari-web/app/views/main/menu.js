@@ -37,7 +37,7 @@ App.MainMenuView = Em.CollectionView.extend({
       if (App.router.get('clusterController.isLoaded') && App.get('router.clusterInstallCompleted')) {
 
         result.push(
-          { label: Em.I18n.t('menu.item.debug'), routing: 'debug'},
+          // { label: Em.I18n.t('menu.item.debug'), routing: 'debug'},
           { label: Em.I18n.t('menu.item.dashboard'), routing: 'dashboard', active: 'active'},
           { label: Em.I18n.t('menu.item.services'), routing: 'services'},
           { label: Em.I18n.t('menu.item.hosts'), routing: 'hosts', hasAlertsLabel: true},
