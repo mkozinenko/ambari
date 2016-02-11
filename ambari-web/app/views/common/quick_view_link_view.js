@@ -243,6 +243,7 @@ App.QuickViewLinks = Em.View.extend({
         quickLinksArray.push(quickLinks);
       }, this);
       this.set('quickLinksArray', quickLinksArray);
+      console.log("quickLinksArray -> "+quickLinksArray);
       this.set('isLoaded', true);
     }
   },
