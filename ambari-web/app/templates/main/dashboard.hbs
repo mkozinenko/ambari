@@ -22,6 +22,7 @@
     {{view App.AllServicesActionView}}
   </div>
     <div class="summary-width span10" id="dashboard-widgets-container">
+    <div class="navbar-shadow">
       <ul class="nav nav-tabs background-text">
         {{#each category in view.categories}}
           {{#view view.NavItemView itemBinding="category.name" }}
@@ -29,7 +30,7 @@
           {{/view}}
         {{/each}}
       </ul>
-
+    </div>
       <!--show widgets, heatmaps or configs in the content-->
       {{outlet}}
     </div>

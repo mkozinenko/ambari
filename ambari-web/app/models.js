@@ -77,4 +77,3 @@ require('models/configs/objects/service_config_property');
 require('models/widget');
 require('models/widget_property');
 require('models/widget_layout');
-require('models/quicklinks/quick_links_config');

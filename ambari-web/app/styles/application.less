@@ -68,26 +68,22 @@ footer {
   text-align: center;
 }
 
+.navbar-shadow {
+  -webkit-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 0 rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
 #top-nav, .ru-badge {
 
   .navbar.navbar-static-top {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    .navbar-inner {
-      background-image: -moz-linear-gradient(top, @top-nav-bg-color-from, @top-nav-bg-color-to);
-      background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@top-nav-bg-color-from), to(@top-nav-bg-color-to));
-      background-image: -webkit-linear-gradient(top, @top-nav-bg-color-from, @top-nav-bg-color-to);
-      background-image: -o-linear-gradient(top, @top-nav-bg-color-from, @top-nav-bg-color-to);
-      background-image: linear-gradient(to bottom, @top-nav-bg-color-from, @top-nav-bg-color-to);
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr= @top-nav-bg-color-from, endColorstr=@top-nav-bg-color-to); //for IE9-
-      -webkit-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0.1), 0 1px 10px rgba(0, 0, 0, 0.1);
-      -moz-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0.1), 0 1px 10px rgba(0, 0, 0, 0.1);
-      box-shadow: inset 0 0 0 rgba(0, 0, 0, 0.1), 0 1px 10px rgba(0, 0, 0, 0.1);
-      max-height: 40px;
+    font-family: "Roboto", Helvetica, Arial, sans-serif;
+    .navbar-shadow {
+      min-height: 51px;
     }
-
     .logo {
       float: left;
-      padding-top: 2px;
+      padding-top: 6px;
       img {
         height: 32px;
       }
@@ -99,7 +95,7 @@ footer {
       font-weight: normal;
       line-height: 32px;
       margin-left: 0;
-      padding: 2px 5px 0 10px;
+      padding: 8px 5px 0 10px;
       text-shadow: 0 1px 0 #555555;
     }
 
@@ -263,7 +259,8 @@ footer {
         margin: 2px 0 0;
         list-style: none;
         background-color: @top-nav-menu-dropdown-bg-color;
-        border: 3px solid @top-nav-menu-dropdown-border-color;
+        border-radius: 3px;
+        /*border: 3px solid @top-nav-menu-dropdown-border-color;*/
         -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
@@ -336,11 +333,6 @@ footer {
   .navbar .nav {
     float: none;
     overflow: hidden;
-  }
-
-  .navbar-inner {
-    min-height: 40px;
-    border: none;
   }
 
   .top-nav-user {
@@ -499,10 +491,6 @@ footer {
     a {
       border-radius: 4px 0 0 4px;
     }
-  }
-
-  .navbar-inner {
-    padding-left: 0;
   }
 
   margin-bottom: 15px;
@@ -2459,7 +2447,7 @@ a:focus {
   }
 }
 .quick-links-wrapper {
-  margin-top: -53px;
+  margin-top: -66px;
   position: relative;
   left: 278px;
   .nav-pills.move {
@@ -2551,7 +2539,8 @@ a:focus {
 .service-button {
   text-align: right;
   margin-bottom: 5px;
-  margin-top: -55px;
+  /*margin-top = -55px*/
+  margin-top: -66px;
   margin-left: 10px;
   min-height: 30px;
   ul.dropdown-menu {
@@ -2915,7 +2904,7 @@ table.graphs {
         margin: 3px;
       }
       .link-button{
-        padding-top: 7px;
+        padding-top: 0px;
         padding-left: 70px;
         .disabled-hdfs-quick-link {
         pointer-events: none;
@@ -4100,6 +4089,7 @@ ul.filter {
   }
 
   .hosts {
+    margin-bottom: -20px;
     padding: 4px;
     overflow: hidden;
     display: none;
@@ -4923,9 +4913,6 @@ i.icon-asterisks {
 @installer-container-margin: 20px;
 #main {
   &.install-wizard-content {
-    .navbar-inner, .main-container {
-      min-width: @installer-container-width + 2*@installer-container-margin;
-    }
     .wizard {
       .container {
         width: @installer-container-width;
@@ -5434,7 +5421,7 @@ i.icon-asterisks {
         font-size: 12px;
     }
     .links .thumbnail .link-button{
-      padding-left: 100px;
+      padding-left: 15px;
     }
     #map-reduce-slots-text{
       font-size: 12px;
@@ -6029,7 +6016,7 @@ input[type="radio"].align-checkbox, input[type="checkbox"].align-checkbox {
 }
 
 .accordion {
-  background-color: #FFFFFF;
+  /*background-color: #FFFFFF;*/
 }
 
 .config-manage-nav {
@@ -6060,4 +6047,20 @@ input[type="radio"].align-checkbox, input[type="checkbox"].align-checkbox {
   &:hover {
     text-decoration: none;
   }
+}
+
+.heatmap-widget-container {
+  position: relative;
+  top: 18px;
+  left: 15px;
+}
+
+.pull-bottom {
+  margin-top: 20px;
+}
+
+.pull-up {
+  height: 30px;
+  position: relative;
+  bottom: 10px;
 }

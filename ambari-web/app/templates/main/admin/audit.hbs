@@ -16,20 +16,22 @@
 * limitations under the License.
 }}
 
-<table class="table table-striped">
-  <thead>
-  <tr>
-    {{#each column in view.columns}}
-    {{view column}}
+<div class="well well-sm-sm">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      {{#each column in view.columns}}
+      {{view column}}
+      {{/each}}
+    </tr>
+    </thead>
+    <tbody>
+    {{#each row in view.rows}}
+    {{view row}}
     {{/each}}
-  </tr>
-  </thead>
-  <tbody>
-  {{#each row in view.rows}}
-  {{view row}}
-  {{/each}}
-  </tbody>
-</table>
-{{#if view.pager}}
-  {{view view.pager}}
-{{/if}}
+    </tbody>
+  </table>
+  {{#if view.pager}}
+    {{view view.pager}}
+  {{/if}}
+</div>

@@ -25,25 +25,27 @@
           {{view view.dropdownView}}
 
           {{#if controller.selectedMetric}}
-            <table class="legend">
-              {{#each slot in controller.selectedMetric.slotDefinitions}}
-                <tr>
-                  <td>
-                    <div class="tile" {{bindAttr style="slot.cssStyle"}}></div>
-                  </td>
-                  <td>{{slot.label}}</td>
-                </tr>
-              {{/each}}
-            </table>
-            {{t common.maximum}}:
-            <div id="inputMaximum" class="control-group">
-              {{view Ember.TextField type="text" maxlength="8" valueBinding="controller.inputMaximum" class="span6"}}
-              {{controller.selectedMetric.units}}
+            <div class="well well-sm">
+              <table class="legend">
+                {{#each slot in controller.selectedMetric.slotDefinitions}}
+                  <tr>
+                    <td>
+                      <div class="tile" {{bindAttr style="slot.cssStyle"}}></div>
+                    </td>
+                    <td>{{slot.label}}</td>
+                  </tr>
+                {{/each}}
+              </table>
+              {{t common.maximum}}:
+              <div id="inputMaximum" class="control-group">
+                {{view Ember.TextField type="text" maxlength="8" valueBinding="controller.inputMaximum" class="span6"}}
+                {{controller.selectedMetric.units}}
+              </div>
             </div>
           {{/if}}
         </div>
         {{#if controller.activeWidget}}
-          <div class="active-widget" {{bindAttr id="activeWidget.id"}}>
+          <div class="active-widget heatmap-widget-container" {{bindAttr id="activeWidget.id"}}>
             {{view activeWidget.viewClass contentBinding="activeWidget" racksBinding = "racks" idBinding="activeWidget.id"}}
           </div>
         {{else}}

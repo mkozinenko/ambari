@@ -20,6 +20,12 @@ path = require 'path'
 
 # See docs at http://brunch.readthedocs.org/en/latest/config.html.
 
+# !!!!!!!!!!!! 
+# Use NodeJS v0.10.40 and Brunch v1.7.10 to Front-end development due
+# https://cwiki.apache.org/confluence/display/AMBARI/Ambari+Development
+# and
+# https://cwiki.apache.org/confluence/display/AMBARI/Coding+Guidelines+for+Ambari
+
 exports.config =
 
   files:

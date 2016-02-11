@@ -224,7 +224,8 @@ a:hover {
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 940px;
+  /*940*/
+  width: 1170px;
 }
 
 .span12 {
@@ -716,8 +717,9 @@ ol ul {
   margin-bottom: 0;
 }
 
+/*standart = 20px*/
 li {
-  line-height: 20px;
+  line-height: 31px;
 }
 
 ul.unstyled,
@@ -3862,9 +3864,9 @@ input[type="submit"].btn.btn-mini {
   line-height: 14px;
 }
 
-.nav-tabs {
+/*.nav-tabs {
   border-bottom: 1px solid #ddd;
-}
+}*/
 
 .nav-tabs > li {
   margin-bottom: -1px;
@@ -4354,7 +4356,8 @@ input[type="submit"].btn.btn-mini {
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 940px;
+  /*940*/
+  width: 1170px;
 }
 
 .navbar-fixed-top {
@@ -5589,7 +5592,7 @@ a.badge:hover {
 
 .accordion-group {
   margin-bottom: 2px;
-  border: 1px solid #e5e5e5;
+  /*border: 1px solid #e5e5e5;*/
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
           border-radius: 4px;

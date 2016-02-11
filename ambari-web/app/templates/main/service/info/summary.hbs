@@ -19,14 +19,14 @@
 {{#if view.service.isRestartRequired}}
   {{#isAccessible ADMIN}}
     <div id="summary-restart-bar">
-      <div class="alert alert-warning clearfix">
+      <div class="well well-warning alert alert-warning clearfix">
         <i class="icon-refresh"></i> {{{view.needToRestartMessage}}} {{t services.service.config.restartService.needToRestart}}
         <a href="#" {{action showComponentsShouldBeRestarted controller.content target="App.router.mainServiceInfoConfigsController"}}>{{view.componentsCount}} {{pluralize view.componentsCount singular="t:common.component" plural="t:common.components"}}</a> {{t on}}
         <a href="#" {{action showHostsShouldBeRestarted controller.content target="App.router.mainServiceInfoConfigsController"}}>{{view.hostsCount}} {{pluralize view.hostsCount singular="t:common.host" plural="t:common.hosts"}}</a>
         <span class="restart-components pull-right">&nbsp</span>
 
         <div class="btn-group pull-right">
-          <button type="button" class="btn btn-default dropdown-toggle btn-warning" data-toggle="dropdown">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             {{t hosts.host.details.needToRestart.button}}
             <span class="caret"></span>
           </button>
@@ -47,7 +47,7 @@
 {{/if}}
 
 <div class="service-block">
-  <div class="box">
+  <div class="box well well-sm-sm">
     <div class="box-header summary-box-header">
       <h4>{{controller.content.label}} {{t services.service.info.menu.summary}}</h4>
       {{#if view.hasAlertDefinitions}}
@@ -71,7 +71,7 @@
   {{! widgets in the metrics panel are loaded seperately from summary page text information
       and does not get block due to any global API poller information }}
   {{#if view.isServiceMetricLoaded}}
-    <div class="service-metrics-block">
+    <div class="service-metrics-block well well-sm-sm">
       <div class="box">
         <div class="box-header">
           <h4>{{t services.service.metrics}}</h4>

@@ -18,8 +18,8 @@
 
 Em.I18n.translations = {
 
-  'app.name':'Ambari',
-  'app.name.subtitle':'Ambari - {0}',
+  'app.name':'Pangea',
+  'app.name.subtitle':'Pangea - {0}',
   'app.name.subtitle.experimental':'Ambari Experimental',
   'app.reloadPopup.link': 'Reload Page',
   'app.reloadPopup.text': 'Trying to connect to server...',
@@ -2769,6 +2769,7 @@ Em.I18n.translations = {
   'restart.service.all.affected': 'Restart All Affected',
   'restart.service.rest.context': 'Restart {0}s',
 
+  'menu.item.debug':'Debug',
   'menu.item.dashboard':'Dashboard',
   'menu.item.services':'Services',
   'menu.item.hosts':'Hosts',
