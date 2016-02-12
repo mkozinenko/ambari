@@ -43,6 +43,7 @@ App.QuickViewLinks = Em.View.extend({
         tagName: data.Clusters.desired_configs[prop]['tag']
       }));
     }
+    this.setQuickLinks
     this.get('actualTags').pushObjects(tags);
     this.setConfigProperties().done(function (data) {
       self.get('configProperties').pushObjects(data);
@@ -68,6 +69,7 @@ App.QuickViewLinks = Em.View.extend({
     });
   },
 
+  // main point to same quicklinks
   loadQuickLinksConfigSuccessCallback: function (data) {
     App.quicklinksMapper.map(data);
     var quickLinksConfig = this.getQuickLinksConfiguration();
@@ -75,6 +77,8 @@ App.QuickViewLinks = Em.View.extend({
       var protocolConfig = Em.get(quickLinksConfig, 'protocol');
       var checks = Em.get(protocolConfig, 'checks');
       var sites = ['core-site', 'hdfs-site'];
+      var quickLinks = [];
+
       if (checks) {
         checks.forEach(function (check) {
           var protocolConfigSiteProp = Em.get(check, 'site')
@@ -87,14 +91,14 @@ App.QuickViewLinks = Em.View.extend({
       var links = Em.get(quickLinksConfig, 'links');
       if (links && links.length > 0) {
         links.forEach(function (link) {
-          if (!link.remove) {
-            var portConfig = Em.get(link, 'port');
-            var portConfigSiteProp = Em.get(portConfig, 'site');
-            if (sites.indexOf(portConfigSiteProp) < 0) {
-              sites.push(portConfigSiteProp);
-            }
-          }
+          if (!link.remove)
+            quickLinks.push(link);
+
         }, this);
+
+        console.log("quickLinks -> " + quickLinks)
+        this.set('quickLinks', quickLinks);
+        this.set('isLoaded', true);
 
         this.set('requiredSiteNames', sites);
         this.setQuickLinks();
@@ -262,15 +266,11 @@ App.QuickViewLinks = Em.View.extend({
   ),
 
   setQuickLinksSuccessCallback: function (response) {
-    var self = this;
     var quickLinks = [];
-    var hosts = this.setHost(response, this.get('content.serviceName'));
-    //if (hosts.length === 0 || !this.get('content.quickLinks')) {
     var serviceName = this.get('content.serviceName');
     var hasQuickLinks = this.hasQuickLinksConfig(serviceName);
     this.set('hasQuickLinksConfiged', hasQuickLinks); // no need to set quicklinks if current service does not have quick links configured...
 
-//this.getQuickLinksConfiguration().get('links').get('label')
     var result = App.QuickLinksConfig.find().findProperty('id', serviceName);
 
     var links = result.get("links");

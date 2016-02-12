@@ -19,15 +19,12 @@
 {{view App.MainServiceInfoMenuView configTabBinding="view.hasConfigTab" heatmapTabBinding="view.hasHeatmapTab"}}
 <div class="span3 quick-links-wrapper">
     {{#view App.QuickViewLinks contentBinding="view.service"}}
-        <span>{{view.hasQuickLinksConfiged}}</span>
         {{#if view.hasQuickLinksConfiged}}
             <ul class="nav nav-pills move">
                 <li class="dropdown quick-links-dropdown">
                     <a class="dropdown-toggle" id="quick-links-dropdown-btn" data-toggle="dropdown" href="#">{{t common.quickLinks}}<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <span>{{view.isLoaded}}</span>
                         {{#if view.isLoaded}}
-                            <span>{{view.quickLinksArray}}</span>
                             {{#if view.quickLinksArray}}
                                 <!--there are multiple masters eg, HBase multiple masters or HDFS HA enabled-->
                                 {{#each quickLinks in view.quickLinksArray}}
