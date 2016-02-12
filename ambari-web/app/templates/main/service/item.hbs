@@ -20,34 +20,30 @@
   <div class="span3 quick-links-wrapper">
     {{#if view.service.quickLinks.length}}
       {{#view App.QuickViewLinks contentBinding="view.service"}}
-        <ul class="nav nav-pills move">
-          <li class="dropdown quick-links-dropdown">
-            <a class="dropdown-toggle btn btn-warning" id="quick-links-dropdown-btn" data-toggle="dropdown" href="#">{{t common.quickLinks}}<b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              {{#if view.isLoaded}}
-                {{#if view.quickLinksArray}}
-                  <!--there are multiple masters eg, HBase multiple masters or HDFS HA enabled-->
-                  {{#each quickLinks in view.quickLinksArray}}
-                    <li class="dropdown-submenu">
-                      <a href="javascript:void(null)">{{quickLinks.publicHostNameLabel}} &nbsp;</a>
-                      <ul class="dropdown-menu">
-                        {{#each quickLinks}}
-                          <li><a {{bindAttr href="url"}} {{bindAttr target="view.linkTarget"}}>{{label}}</a></li>
-                        {{/each}}
-                      </ul>
-                    </li>
-                  {{/each}}
-                {{else}}
-                  {{#each view.quickLinks}}
-                    <li><a {{bindAttr href="url"}} {{bindAttr target="view.linkTarget"}}>{{label}}</a></li>
-                  {{/each}}
-                {{/if}}
-              {{else}}
-                {{view App.SpinnerView}}
-              {{/if}}
-           </ul>
-          </li>
-        </ul>
+        <a class="dropdown-toggle btn btn-warning" id="quick-links-dropdown-btn" data-toggle="dropdown" href="#">{{t common.quickLinks}}<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          {{#if view.isLoaded}}
+            {{#if view.quickLinksArray}}
+              <!--there are multiple masters eg, HBase multiple masters or HDFS HA enabled-->
+              {{#each quickLinks in view.quickLinksArray}}
+                <li class="dropdown-submenu">
+                  <a href="javascript:void(null)">{{quickLinks.publicHostNameLabel}} &nbsp;</a>
+                  <ul class="dropdown-menu">
+                    {{#each quickLinks}}
+                      <li><a {{bindAttr href="url"}} {{bindAttr target="view.linkTarget"}}>{{label}}</a></li>
+                    {{/each}}
+                  </ul>
+                </li>
+              {{/each}}
+            {{else}}
+              {{#each view.quickLinks}}
+                <li><a {{bindAttr href="url"}} {{bindAttr target="view.linkTarget"}}>{{label}}</a></li>
+              {{/each}}
+            {{/if}}
+          {{else}}
+            {{view App.SpinnerView}}
+          {{/if}}
+       </ul>
       {{/view}}
     {{/if}}
   </div>
@@ -56,7 +52,7 @@
 <div class="service-button">
   {{#if view.isMaintenanceActive}}
     <div class="btn-group display-inline-block">
-      <a class="btn dropdown-toggle" id="service-actions-dropdown-btn" data-toggle="dropdown" href="#">
+      <a class="btn btn-warning dropdown-toggle" id="service-actions-dropdown-btn" data-toggle="dropdown" href="#">
         {{t services.service.actions.serviceActions}}
         <span class="caret"></span>
       </a>
