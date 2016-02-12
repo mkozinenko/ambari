@@ -22,6 +22,7 @@ var stringUtils = require('utils/string_utils');
 App.QuickViewLinks = Em.View.extend({
 
   isLoaded: false,
+  hasQuickLinksConfiged: false,
 
   loadTags: function () {
     App.ajax.send({
@@ -49,8 +50,56 @@ App.QuickViewLinks = Em.View.extend({
     });
   },
 
-  loadTagsError: function() {
+  loadTagsError: function () {
     this.getQuickLinksHosts();
+  },
+
+  loadQuickLinksConfigurations: function () {
+    var serviceName = this.get('content.serviceName');
+    console.info("Loading quicklinks configurations for " + serviceName);
+    return App.ajax.send({
+      name: 'configs.quicklinksconfig',
+      sender: this,
+      data: {
+        serviceName: serviceName,
+        stackVersionUrl: App.get('stackVersionURL')
+      },
+      success: 'loadQuickLinksConfigSuccessCallback'
+    });
+  },
+
+  loadQuickLinksConfigSuccessCallback: function (data) {
+    App.quicklinksMapper.map(data);
+    var quickLinksConfig = this.getQuickLinksConfiguration();
+    if (quickLinksConfig != null) {
+      var protocolConfig = Em.get(quickLinksConfig, 'protocol');
+      var checks = Em.get(protocolConfig, 'checks');
+      var sites = ['core-site', 'hdfs-site'];
+      if (checks) {
+        checks.forEach(function (check) {
+          var protocolConfigSiteProp = Em.get(check, 'site')
+          if (sites.indexOf(protocolConfigSiteProp) < 0) {
+            sites.push(protocolConfigSiteProp);
+          }
+        }, this);
+      }
+
+      var links = Em.get(quickLinksConfig, 'links');
+      if (links && links.length > 0) {
+        links.forEach(function (link) {
+          if (!link.remove) {
+            var portConfig = Em.get(link, 'port');
+            var portConfigSiteProp = Em.get(portConfig, 'site');
+            if (sites.indexOf(portConfigSiteProp) < 0) {
+              sites.push(portConfigSiteProp);
+            }
+          }
+        }, this);
+
+        this.set('requiredSiteNames', sites);
+        this.setQuickLinks();
+      }
+    }
   },
 
   getQuickLinksHosts: function () {
@@ -75,7 +124,8 @@ App.QuickViewLinks = Em.View.extend({
   /**
    * list of files that contains properties for enabling/disabling ssl
    */
-  requiredSiteNames: ['hadoop-env','yarn-env','hbase-env','oozie-env','mapred-env','storm-env', 'falcon-env', 'core-site', 'hdfs-site', 'hbase-site', 'oozie-site', 'yarn-site', 'mapred-site', 'storm-site', 'spark-defaults', 'accumulo-site', 'application-properties', 'ranger-admin-site', 'ranger-site', 'admin-properties'],
+  //requiredSiteNames: ['hadoop-env','yarn-env','hbase-env','oozie-env','mapred-env','storm-env', 'falcon-env', 'core-site', 'hdfs-site', 'hbase-site', 'oozie-site', 'yarn-site', 'mapred-site', 'storm-site', 'spark-defaults', 'accumulo-site', 'application-properties', 'ranger-admin-site', 'ranger-site', 'admin-properties'],
+  requiredSiteNames: [],
   /**
    * Get public host name by its host name.
    *
@@ -84,7 +134,7 @@ App.QuickViewLinks = Em.View.extend({
    * @param {String} hostName
    * @return {String}
    **/
-  getPublicHostName: function(hosts, hostName) {
+  getPublicHostName: function (hosts, hostName) {
     return Em.get(hosts.findProperty('Hosts.host_name', hostName), 'Hosts.public_host_name');
   },
 
@@ -97,6 +147,73 @@ App.QuickViewLinks = Em.View.extend({
     return App.router.get('configurationController').getConfigsByTags(tags);
   },
 
+  getQuickLinksConfiguration: function () {
+    var serviceName = this.get('content.serviceName');
+    var self = this;
+    if (self.hasQuickLinksConfig(serviceName)) {
+      var quickLinksConfiguration = App.QuickLinksConfig.find().findProperty("id", serviceName);
+      return quickLinksConfiguration;
+    }
+    return null;
+  },
+
+  hasQuickLinksConfig: function (serviceName) {
+    var result = App.QuickLinksConfig.find().findProperty('id', serviceName);
+    if (!result)
+      return false;
+
+    var links = result.get("links");
+    if (links && links.length > 0) {
+      var toBeRemoved = 0;
+      links.forEach(function (link) {
+        if (link.remove)
+          toBeRemoved++;
+      });
+      return !(links.length === toBeRemoved);
+    } else {
+      return false;
+    }
+  },
+
+  toAddLink: function (link) {
+    var linkRemoved = Em.get(link, 'removed');
+    var template = Em.get(link, 'template');
+    return (template && !linkRemoved);
+  },
+
+  getHostLink: function (link, host, protocol, configProperties, response) {
+    var serviceName = this.get('content.serviceName');
+    if (serviceName === 'MAPREDUCE2' && response) {
+      var portConfig = Em.get(link, 'port');
+      var siteName = Em.get(portConfig, 'site');
+      var siteConfigs = this.get('configProperties').findProperty('type', siteName).properties;
+      var hostPortConfigValue = siteConfigs[Em.get(portConfig, protocol + '_config')];
+      if (hostPortConfigValue != null) {
+        var hostPortValue = hostPortConfigValue.match(new RegExp("([\\w\\d.-]*):(\\d+)"));
+        var hostObj = response.items.findProperty('Hosts.host_name', hostPortValue[1]);
+        if (hostObj != null) {
+          host = hostObj.Hosts.public_host_name;
+        }
+      }
+    }
+
+    var linkPort = this.setPort(Em.get(link, 'port'), protocol, configProperties);
+    if (this.toAddLink(link)) {
+      var newItem = {};
+      var requiresUserName = Em.get(link, 'requires_user_name');
+      var template = Em.get(link, 'template');
+      if ('true' === requiresUserName) {
+        newItem.url = template.fmt(protocol, host, linkPort, App.router.get('loginName'));
+      } else {
+        newItem.url = template.fmt(protocol, host, linkPort);
+      }
+      newItem.label = link.label;
+      return newItem;
+    } else {
+      return null;
+    }
+  },
+
   ambariProperties: function () {
     return App.router.get('clusterController.ambariProperties');
   },
@@ -106,13 +223,15 @@ App.QuickViewLinks = Em.View.extend({
   quickLinks: [],
 
   didInsertElement: function () {
-    this.setQuickLinks();
+    //this.setQuickLinks();
+    this.loadQuickLinksConfigurations();
   },
 
-  willDestroyElement: function() {
+  willDestroyElement: function () {
     this.get('configProperties').clear();
     this.get('actualTags').clear();
     this.get('quickLinks').clear();
+    this.get('requiredSiteNames').clear();
   },
 
   findComponentHost: function (components, componentName) {
@@ -136,116 +255,136 @@ App.QuickViewLinks = Em.View.extend({
       this.loadTags();
     }
   }.observes(
-    'App.currentStackVersionNumber',
-    'App.singleNodeInstall',
-    'App.router.clusterController.isServiceMetricsLoaded',
-    'App.router.clusterController.isHostComponentMetricsLoaded'
+      'App.currentStackVersionNumber',
+      'App.singleNodeInstall',
+      'App.router.clusterController.isServiceMetricsLoaded',
+      'App.router.clusterController.isHostComponentMetricsLoaded'
   ),
 
   setQuickLinksSuccessCallback: function (response) {
     var self = this;
     var quickLinks = [];
     var hosts = this.setHost(response, this.get('content.serviceName'));
-    if (hosts.length === 0 || !this.get('content.quickLinks')) {
-      quickLinks = [{
-          label: this.t('quick.links.error.label'),
-          url: 'javascript:alert("' + this.t('contact.administrator') + '");return false;'
-      }];
-      this.set('quickLinks', quickLinks);
-      this.set('isLoaded', true);
-    } else if (hosts.length == 1) {
+    //if (hosts.length === 0 || !this.get('content.quickLinks')) {
+    var serviceName = this.get('content.serviceName');
+    var hasQuickLinks = this.hasQuickLinksConfig(serviceName);
+    this.set('hasQuickLinksConfiged', hasQuickLinks); // no need to set quicklinks if current service does not have quick links configured...
 
-      quickLinks = this.get('content.quickLinks').map(function (item) {
-        var protocol = self.setProtocol(item.get('service_id'), self.get('configProperties'), self.ambariProperties(), item);
-        var siteConfigs = {};
+//this.getQuickLinksConfiguration().get('links').get('label')
+    var result = App.QuickLinksConfig.find().findProperty('id', serviceName);
 
-        if (item.get('template')) {
-          var port = item.get('http_config') && self.setPort(item, protocol);
-          if (['FALCON', 'OOZIE', 'ATLAS'].contains(item.get('service_id'))) {
-            item.set('url', item.get('template').fmt(protocol, hosts[0], port, App.router.get('loginName')));
-          } else if (item.get('service_id') === 'MAPREDUCE2') {
-            siteConfigs = self.get('configProperties').findProperty('type', item.get('site')).properties;
-            var hostPortConfigValue = siteConfigs[item.get(protocol + '_config')];
-            if (hostPortConfigValue != null) {
-              var hostPortValue = hostPortConfigValue.match(new RegExp("([\\w\\d.-]*):(\\d+)"));
-              var hostObj = response.items.findProperty('Hosts.host_name', hostPortValue[1]);
-              if (hostObj != null) {
-                var publicHostValue = hostObj.Hosts.public_host_name;
-                hostPortConfigValue = "%@:%@".fmt(publicHostValue, hostPortValue[2])
-              }
-            }
-            item.set('url', item.get('template').fmt(protocol, hostPortConfigValue));
-          } else if (item.get('service_id') === 'RANGER') {
-            siteConfigs = self.get('configProperties').findProperty('type', 'admin-properties').properties;
-            if (siteConfigs['policymgr_external_url']) {
-              // external_url example: "http://c6404.ambari.apache.org:6080"
-              var hostAndPort = siteConfigs['policymgr_external_url'] && siteConfigs['policymgr_external_url'].split('://')[1];
-              item.set('url', protocol + '://' + hostAndPort);
-            } else {
-              item.set('url', item.get('template').fmt(protocol, hosts[0], port));
-            }
-          } else {
-            item.set('url', item.get('template').fmt(protocol, hosts[0], port));
-          }
-        }
-        return item;
+    var links = result.get("links");
+    if (links && links.length > 0) {
+      links.forEach(function (link) {
+        if (!link.remove)
+          quickLinks.push(link);
       });
+      console.log("quickLinks -> " + quickLinks)
       this.set('quickLinks', quickLinks);
-      this.set('isLoaded', true);
-    } else {
-      // multiple hbase masters or HDFS HA enabled
-      var quickLinksArray = [];
-      hosts.forEach(function(host) {
-        var quickLinks = [];
-        self.get('content.quickLinks').forEach(function (item) {
-          var newItem = {};
-          var protocol = self.setProtocol(item.get('service_id'), self.get('configProperties'), self.ambariProperties(), item);
-          if (item.get('template')) {
-            var port;
-            var hostNameRegExp = new RegExp('([\\w\\W]*):\\d+');
-            if (item.get('service_id') === 'HDFS') {
-              var config;
-              var configPropertiesObject = self.get('configProperties').findProperty('type', item.get('site'));
-              if (configPropertiesObject && configPropertiesObject.properties) {
-                var properties = configPropertiesObject.properties;
-                var nameServiceId = properties['dfs.nameservices'];
-                var nnProperties = ['dfs.namenode.{0}-address.{1}.nn1', 'dfs.namenode.{0}-address.{1}.nn2'].map(function (c) {
-                  return c.format(protocol, nameServiceId);
-                });
-                var nnPropertiesLength = nnProperties.length;
-                for (var i = nnPropertiesLength; i--;) {
-                  var propertyName = nnProperties[i];
-                  var hostNameMatch = properties[propertyName] && properties[propertyName].match(hostNameRegExp);
-                  if (hostNameMatch && hostNameMatch[1] === host.publicHostName) {
-                    config = propertyName;
-                    break;
-                  }
-                }
-              }
-              port = self.setPort(item, protocol, config);
-            } else {
-              port = item.get('http_config') && self.setPort(item, protocol);
-            }
-            if (item.get('service_id')==='OOZIE') {
-              newItem.url = item.get('template').fmt(protocol, host.publicHostName, port, App.router.get('loginName'));
-            } else {
-              newItem.url = item.get('template').fmt(protocol, host.publicHostName, port);
-            }
-            newItem.label = item.get('label');
-          }
-          quickLinks.push(newItem);
-        });
-        if (host.status) {
-          quickLinks.set('publicHostNameLabel', Em.I18n.t('quick.links.publicHostName').format(host.publicHostName, host.status));
-        } else {
-          quickLinks.set('publicHostNameLabel', host.publicHostName);
-        }
-        quickLinksArray.push(quickLinks);
-      }, this);
-      this.set('quickLinksArray', quickLinksArray);
-      console.log("quickLinksArray -> "+quickLinksArray);
       this.set('isLoaded', true);
     }
+
+
+    // if (hosts.length === 0){
+    //quickLinks = [{
+    //    label: this.t('quick.links.error.label'),
+    //    url: 'javascript:alert("' + this.t('contact.administrator') + '");return false;'
+    //}];
+    //this.set('quickLinks', quickLinks);
+    //this.set('isLoaded', true);
+    //    this.setEmptyLinks(); // my
+    //} else if (hosts.length == 1) {
+    //
+    //  quickLinks = this.get('content.quickLinks').map(function (item) {
+    //    var protocol = self.setProtocol(item.get('service_id'), self.get('configProperties'), self.ambariProperties(), item);
+    //    var siteConfigs = {};
+    //
+    //    if (item.get('template')) {
+    //      var port = item.get('http_config') && self.setPort(item, protocol);
+    //      if (['FALCON', 'OOZIE', 'ATLAS'].contains(item.get('service_id'))) {
+    //        item.set('url', item.get('template').fmt(protocol, hosts[0], port, App.router.get('loginName')));
+    //      } else if (item.get('service_id') === 'MAPREDUCE2') {
+    //        siteConfigs = self.get('configProperties').findProperty('type', item.get('site')).properties;
+    //        var hostPortConfigValue = siteConfigs[item.get(protocol + '_config')];
+    //        if (hostPortConfigValue != null) {
+    //          var hostPortValue = hostPortConfigValue.match(new RegExp("([\\w\\d.-]*):(\\d+)"));
+    //          var hostObj = response.items.findProperty('Hosts.host_name', hostPortValue[1]);
+    //          if (hostObj != null) {
+    //            var publicHostValue = hostObj.Hosts.public_host_name;
+    //            hostPortConfigValue = "%@:%@".fmt(publicHostValue, hostPortValue[2])
+    //          }
+    //        }
+    //        item.set('url', item.get('template').fmt(protocol, hostPortConfigValue));
+    //      } else if (item.get('service_id') === 'RANGER') {
+    //        siteConfigs = self.get('configProperties').findProperty('type', 'admin-properties').properties;
+    //        if (siteConfigs['policymgr_external_url']) {
+    //          // external_url example: "http://c6404.ambari.apache.org:6080"
+    //          var hostAndPort = siteConfigs['policymgr_external_url'] && siteConfigs['policymgr_external_url'].split('://')[1];
+    //          item.set('url', protocol + '://' + hostAndPort);
+    //        } else {
+    //          item.set('url', item.get('template').fmt(protocol, hosts[0], port));
+    //        }
+    //      } else {
+    //        item.set('url', item.get('template').fmt(protocol, hosts[0], port));
+    //      }
+    //    }
+    //    return item;
+    //  });
+    //  this.set('quickLinks', quickLinks);
+    //  this.set('isLoaded', true);
+    //} else {
+    //  // multiple hbase masters or HDFS HA enabled
+    //  var quickLinksArray = [];
+    //  hosts.forEach(function(host) {
+    //    var quickLinks = [];
+    //    self.get('content.quickLinks').forEach(function (item) {
+    //      var newItem = {};
+    //      var protocol = self.setProtocol(item.get('service_id'), self.get('configProperties'), self.ambariProperties(), item);
+    //      if (item.get('template')) {
+    //        var port;
+    //        var hostNameRegExp = new RegExp('([\\w\\W]*):\\d+');
+    //        if (item.get('service_id') === 'HDFS') {
+    //          var config;
+    //          var configPropertiesObject = self.get('configProperties').findProperty('type', item.get('site'));
+    //          if (configPropertiesObject && configPropertiesObject.properties) {
+    //            var properties = configPropertiesObject.properties;
+    //            var nameServiceId = properties['dfs.nameservices'];
+    //            var nnProperties = ['dfs.namenode.{0}-address.{1}.nn1', 'dfs.namenode.{0}-address.{1}.nn2'].map(function (c) {
+    //              return c.format(protocol, nameServiceId);
+    //            });
+    //            var nnPropertiesLength = nnProperties.length;
+    //            for (var i = nnPropertiesLength; i--;) {
+    //              var propertyName = nnProperties[i];
+    //              var hostNameMatch = properties[propertyName] && properties[propertyName].match(hostNameRegExp);
+    //              if (hostNameMatch && hostNameMatch[1] === host.publicHostName) {
+    //                config = propertyName;
+    //                break;
+    //              }
+    //            }
+    //          }
+    //          port = self.setPort(item, protocol, config);
+    //        } else {
+    //          port = item.get('http_config') && self.setPort(item, protocol);
+    //        }
+    //        if (item.get('service_id')==='OOZIE') {
+    //          newItem.url = item.get('template').fmt(protocol, host.publicHostName, port, App.router.get('loginName'));
+    //        } else {
+    //          newItem.url = item.get('template').fmt(protocol, host.publicHostName, port);
+    //        }
+    //        newItem.label = item.get('label');
+    //      }
+    //      quickLinks.push(newItem);
+    //    });
+    //    if (host.status) {
+    //      quickLinks.set('publicHostNameLabel', Em.I18n.t('quick.links.publicHostName').format(host.publicHostName, host.status));
+    //    } else {
+    //      quickLinks.set('publicHostNameLabel', host.publicHostName);
+    //    }
+    //    quickLinksArray.push(quickLinks);
+    //  }, this);
+    //  this.set('quickLinksArray', quickLinksArray);
+    //  this.set('isLoaded', true);
+    //}
   },
 
   /**
@@ -255,7 +394,7 @@ App.QuickViewLinks = Em.View.extend({
    * @returns {Array} containing hostName(s)
    * @method setHost
    */
-  setHost: function(response, serviceName) {
+  setHost: function (response, serviceName) {
     if (App.get('singleNodeInstall')) {
       return [App.get('singleNodeAlias')];
     }
@@ -263,7 +402,7 @@ App.QuickViewLinks = Em.View.extend({
     switch (serviceName) {
       case 'OOZIE':
         // active OOZIE components
-        var components = this.get('content.hostComponents').filterProperty('componentName','OOZIE_SERVER').filterProperty('workStatus', 'STARTED');
+        var components = this.get('content.hostComponents').filterProperty('componentName', 'OOZIE_SERVER').filterProperty('workStatus', 'STARTED');
         if (components && components.length > 1) {
           components.forEach(function (component) {
             hosts.push({
@@ -314,12 +453,18 @@ App.QuickViewLinks = Em.View.extend({
           // need all hbase_masters hosts in quick links
           if (activeMaster) {
             activeMaster.forEach(function (item) {
-              hosts.push({'publicHostName': item.Hosts.public_host_name, 'status': Em.I18n.t('quick.links.label.active')});
+              hosts.push({
+                'publicHostName': item.Hosts.public_host_name,
+                'status': Em.I18n.t('quick.links.label.active')
+              });
             });
           }
           if (standbyMasters) {
             standbyMasters.forEach(function (item) {
-              hosts.push({'publicHostName': item.Hosts.public_host_name, 'status': Em.I18n.t('quick.links.label.standby')});
+              hosts.push({
+                'publicHostName': item.Hosts.public_host_name,
+                'status': Em.I18n.t('quick.links.label.standby')
+              });
             });
           }
           if (otherMasters) {
@@ -451,8 +596,8 @@ App.QuickViewLinks = Em.View.extend({
         var port = portValue && portValue.length && portValue[1];
         var protocol = 'http';
         var isHttpsPropertiesEnabled = properties && (properties['oozie.https.port'] ||
-                                                      properties['oozie.https.keystore.file'] ||
-                                                      properties['oozie.https.keystore.pass']);
+            properties['oozie.https.keystore.file'] ||
+            properties['oozie.https.keystore.pass']);
         if (port === '11443' || isHttpsPropertiesEnabled) {
           protocol = 'https';
         }
@@ -462,13 +607,13 @@ App.QuickViewLinks = Em.View.extend({
         var rangerProperties = configProperties && configProperties.findProperty('type', 'ranger-admin-site');
         var rangerSiteProperties = configProperties && configProperties.findProperty('type', 'ranger-site');
         if (rangerProperties && rangerProperties.properties &&
-          rangerProperties.properties['ranger.service.https.attrib.ssl.enabled'] == "true" &&
-          rangerProperties.properties['ranger.service.http.enabled'] == "false") {
+            rangerProperties.properties['ranger.service.https.attrib.ssl.enabled'] == "true" &&
+            rangerProperties.properties['ranger.service.http.enabled'] == "false") {
           //HDP2.3
           return "https";
         } else if (rangerProperties && rangerProperties.properties &&
-          rangerProperties.properties['ranger.service.https.attrib.ssl.enabled'] == "false" &&
-          rangerProperties.properties['ranger.service.http.enabled'] == "true") {
+            rangerProperties.properties['ranger.service.https.attrib.ssl.enabled'] == "false" &&
+            rangerProperties.properties['ranger.service.http.enabled'] == "true") {
           //HDP2.3
           return "http";
         } else if (rangerSiteProperties && rangerSiteProperties.properties && rangerSiteProperties.properties['http.enabled'] == "false") {
