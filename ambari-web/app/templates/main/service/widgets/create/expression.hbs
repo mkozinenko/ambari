@@ -30,7 +30,7 @@
     </ul>
   </div>
   <div class="input-append span2 add-number">
-    {{view App.AddNumberExpressionView valueBinding="view.numberValue" class="input-small"}}
+    {{view App.AddNumberExpressionView valueBinding="view.numberValue" class="input-small pull-bottom-l"}}
     <button class="btn add-on" {{action addNumber target="view"}} {{bindAttr disabled="view.isNumberValueInvalid"}}>{{t dashboard.widgets.wizard.step2.newNumber}}</button>
   </div>
 
