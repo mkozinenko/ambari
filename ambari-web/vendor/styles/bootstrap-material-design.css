@@ -796,7 +796,8 @@ fieldset[disabled][disabled] .btn-group-vertical.btn-group-raised:focus:not(:act
 }
 .btn-group.open > .dropdown-toggle.btn.btn-warning,
 .btn-group-vertical.open > .dropdown-toggle.btn.btn-warning {
-  background-color: #ff5722;
+  /*background-color: #ff5722;*/
+  background-color: #ffffff;
 }
 .btn-group.open > .dropdown-toggle.btn.btn-danger,
 .btn-group-vertical.open > .dropdown-toggle.btn.btn-danger {
