@@ -2823,7 +2823,7 @@ table [class*=span],
   clear: both;
   font-weight: normal;
   line-height: 20px;
-  color: #333333;
+  color: #333333 !important;
   white-space: nowrap;
 }
 
