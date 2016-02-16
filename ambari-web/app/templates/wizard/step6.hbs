@@ -19,9 +19,9 @@
 <div id="step6">
   <h2>{{t installer.step6.header}}</h2>
 
-  <div class="alert alert-info">{{{view.label}}}</div>
+  <div class="alert alert-info well well-info">{{{view.label}}}</div>
   {{#if anyGeneralIssues}}
-    <div class="alert alert-error">
+    <div class="alert alert-error well well-error">
       {{t installer.step6.validationSlavesAndClients.hasIssues}}
       <a href="javascript:void(null);" {{action openSlavesAndClientsIssues target="controller"}}>{{t installer.step6.validationSlavesAndClients.click}}</a>
       {{t installer.step6.validationSlavesAndClients.forDetails}}
