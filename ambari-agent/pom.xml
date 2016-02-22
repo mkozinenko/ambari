@@ -39,6 +39,7 @@
     <skipTests>false</skipTests>
     <agent.install.dir>/usr/lib/python2.6/site-packages/ambari_agent</agent.install.dir>
     <ambari_commons.install.dir>/usr/lib/ambari-agent/lib/ambari_commons</ambari_commons.install.dir>
+    <ambari_mesos.install.dir>/usr/lib/ambari-agent/lib/ambari_mesos</ambari_mesos.install.dir>
     <resource_management.install.dir>/usr/lib/ambari-agent/lib/resource_management</resource_management.install.dir>
     <jinja.install.dir>/usr/lib/ambari-agent/lib/ambari_jinja2</jinja.install.dir>
     <simplejson.install.dir>/usr/lib/ambari-agent/lib/ambari_simplejson</simplejson.install.dir>
@@ -260,6 +261,16 @@
               <sources>
                 <source>
                   <location>${project.basedir}/../ambari-common/src/main/python/ambari_commons</location>
+                </source>
+              </sources>
+            </mapping>
+            <mapping>
+              <directory>${ambari_mesos.install.dir}</directory>
+              <username>root</username>
+              <groupname>root</groupname>
+              <sources>
+                <source>
+                  <location>${project.basedir}/../ambari-common/src/main/python/ambari_mesos/</location>
                 </source>
               </sources>
             </mapping>
@@ -498,6 +509,17 @@
               <mapper>
                 <type>perm</type>
                 <prefix>${jinja.install.dir}</prefix>
+                <user>root</user>
+                <group>root</group>
+                <filemode>755</filemode>
+              </mapper>
+            </data>
+            <data>
+              <src>${project.basedir}/../ambari-common/src/main/python/ambari_mesos</src>
+              <type>directory</type>
+              <mapper>
+                <type>perm</type>
+                <prefix>${ambari_mesos.install.dir}</prefix>
                 <user>root</user>
                 <group>root</group>
                 <filemode>755</filemode>
@@ -847,7 +869,7 @@
       <executable.shell>cmd</executable.shell>
       <fileextension.shell>cmd</fileextension.shell>
       <fileextension.dot.shell-default>.cmd</fileextension.dot.shell-default>
-      <path.python.1>${project.basedir}\..\ambari-common\src\main\python;${project.basedir}\..\ambari-agent\src\main\python;${project.basedir}\..\ambari-common\src\main\python\ambari_jinja2;${project.basedir}\..\ambari-common\src\main\python\ambari_commons;${project.basedir}\..\ambari-common\src\test\python;${project.basedir}\src\main\python;${project.basedir}\src\main\python\ambari_agent;${project.basedir}\src\main\python\resource_management;${project.basedir}\src\test\python;${project.basedir}\src\test\python\ambari_agent;${project.basedir}\src\test\python\resource_management;${project.basedir}\..\ambari-server\src\test\python;${project.basedir}\..\ambari-server\src\main\resources\common-services\HDFS\2.1.0.2.0\package\files</path.python.1>
+      <path.python.1>${project.basedir}\..\ambari-common\src\main\python;${project.basedir}\..\ambari-agent\src\main\python;${project.basedir}\..\ambari-common\src\main\python\ambari_jinja2;${project.basedir}\..\ambari-common\src\main\python\ambari_commons;${project.basedir}\..\ambari-common\src\test\python;${project.basedir}\src\main\python;${project.basedir}\src\main\python\ambari_agent;${project.basedir}\src\main\python\ambari_mesos;${project.basedir}\src\main\python\resource_management;${project.basedir}\src\test\python;${project.basedir}\src\test\python\ambari_agent;${project.basedir}\src\test\python\ambari_mesos;${project.basedir}\src\test\python\resource_management;${project.basedir}\..\ambari-server\src\test\python;${project.basedir}\..\ambari-server\src\main\resources\common-services\HDFS\2.1.0.2.0\package\files</path.python.1>
      </properties>
     </profile>
     <profile>
@@ -866,7 +888,7 @@
       <executable.shell>sh</executable.shell>
       <fileextension.shell>sh</fileextension.shell>
       <fileextension.dot.shell-default></fileextension.dot.shell-default>
-      <path.python.1>${project.basedir}/../ambari-common/src/main/python:${project.basedir}/../ambari-agent/src/main/python:${project.basedir}/../ambari-common/src/main/python/ambari_jinja2:${project.basedir}/../ambari-common/src/main/python/ambari_commons:${project.basedir}/../ambari-common/src/test/python:${project.basedir}/src/main/python:${project.basedir}/src/main/python/ambari_agent:${project.basedir}/src/main/python/resource_management:${project.basedir}/src/test/python:${project.basedir}/src/test/python/ambari_agent:${project.basedir}/src/test/python/resource_management:${project.basedir}/../ambari-server/src/test/python:${project.basedir}/../ambari-server/src/main/resources/common-services/HDFS/2.1.0.2.0/package/files</path.python.1>
+      <path.python.1>${project.basedir}/../ambari-common/src/main/python:${project.basedir}/../ambari-agent/src/main/python:${project.basedir}/../ambari-common/src/main/python/ambari_jinja2:${project.basedir}/../ambari-common/src/main/python/ambari_commons:${project.basedir}/../ambari-common/src/test/python:${project.basedir}/src/main/python:${project.basedir}/src/main/python/ambari_agent:${project.basedir}/src/main/python/ambari_mesos:${project.basedir}/src/main/python/resource_management:${project.basedir}/src/test/python:${project.basedir}/src/test/python/ambari_agent:${project.basedir}/src/test/python/ambari_mesos:${project.basedir}/src/test/python/resource_management:${project.basedir}/../ambari-server/src/test/python:${project.basedir}/../ambari-server/src/main/resources/common-services/HDFS/2.1.0.2.0/package/files</path.python.1>
      </properties>
     </profile>
     <profile>
