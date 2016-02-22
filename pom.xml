@@ -292,6 +292,8 @@
             <!--Simplejson library (MIT license)-->
             <exclude>ambari-common/src/main/python/ambari_simplejson/**</exclude>
 
+            <exclude>ambari-common/src/main/python/ambari_mesos/**</exclude>
+
             <exclude>ambari-web/node_modules/**</exclude>
 
             <!--Contributions-->

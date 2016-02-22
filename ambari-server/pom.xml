@@ -35,6 +35,7 @@
     <hdpUrlForCentos6>http://public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.1.1.0</hdpUrlForCentos6>
     <hdpLatestUrl>http://public-repo-1.hortonworks.com/HDP/hdp_urlinfo.json</hdpLatestUrl>
     <ambari_commons.install.dir>/usr/lib/ambari-server/lib/ambari_commons</ambari_commons.install.dir>
+    <ambari_mesos.install.dir>/usr/lib/ambari-server/lib/ambari_mesos</ambari_mesos.install.dir>
     <resource_management.install.dir>/usr/lib/ambari-server/lib/resource_management</resource_management.install.dir>
     <jinja.install.dir>/usr/lib/ambari-server/lib/ambari_jinja2</jinja.install.dir>
     <simplejson.install.dir>/usr/lib/ambari-server/lib/ambari_simplejson</simplejson.install.dir>
@@ -356,6 +357,17 @@
                   <location>
                     ${project.basedir}/../ambari-common/src/main/python/ambari_commons
                   </location>
+                </source>
+              </sources>
+            </mapping>
+            <mapping>
+              <directory>${ambari_mesos.install.dir}</directory>
+              <filemode>755</filemode>
+              <username>root</username>
+              <groupname>root</groupname>
+              <sources>
+                <source>
+                  <location>${project.basedir}/../ambari-common/src/main/python/ambari_mesos</location>
                 </source>
               </sources>
             </mapping>
@@ -1186,6 +1198,17 @@
               <mapper>
                 <type>perm</type>
                 <prefix>${ambari_commons.install.dir}</prefix>
+                <filemode>755</filemode>
+                <user>root</user>
+                <group>root</group>
+              </mapper>
+            </data>
+            <data>
+              <src>${project.basedir}/../ambari-common/src/main/python/ambari_mesos</src>
+              <type>directory</type>
+              <mapper>
+                <type>perm</type>
+                <prefix>${ambari_mesos.install.dir}</prefix>
                 <filemode>755</filemode>
                 <user>root</user>
                 <group>root</group>

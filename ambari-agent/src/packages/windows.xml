@@ -33,6 +33,10 @@
       <outputDirectory>/sbin/ambari_agent</outputDirectory>
     </fileSet>
     <fileSet>
+      <directory>${project.basedir}/../ambari-common/src/main/python/ambari_mesos</directory>
+      <outputDirectory>/sbin/ambari_mesos</outputDirectory>
+    </fileSet>
+    <fileSet>
       <directory>${project.basedir}/../ambari-common/src/main/python/resource_management</directory>
       <outputDirectory>/sbin/resource_management</outputDirectory>
     </fileSet>
