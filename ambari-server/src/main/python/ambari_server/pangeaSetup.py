@@ -128,3 +128,10 @@ class PangeaSetup(object):
         for cmd in commands:
             run_os_command(cmd)
 
+def pangea_setup(_options):
+    p = PangeaSetup()
+    p.deploy()
+
+def pangea_reset(_options):
+    p = PangeaSetup()
+    p.reset()

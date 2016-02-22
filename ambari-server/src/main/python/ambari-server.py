@@ -37,6 +37,7 @@ from ambari_server.serverSetup import reset, setup, setup_jce_policy
 from ambari_server.serverUpgrade import upgrade, upgrade_stack, set_current
 from ambari_server.setupHttps import setup_https, setup_truststore
 from ambari_server.hostUpdate import update_host_names
+from ambari_server.pangeaSetup import pangea_setup
 
 from ambari_server.setupActions import BACKUP_ACTION, LDAP_SETUP_ACTION, LDAP_SYNC_ACTION, PSTART_ACTION, \
   REFRESH_STACK_HASH_ACTION, RESET_ACTION, RESTORE_ACTION, UPDATE_HOST_NAMES_ACTION, SETUP_ACTION, SETUP_SECURITY_ACTION, \
@@ -523,8 +524,10 @@ def create_user_action_map(args, options):
         REFRESH_STACK_HASH_ACTION: UserAction(refresh_stack_hash_action),
         BACKUP_ACTION: UserActionPossibleArgs(backup, [1, 2], args),
         RESTORE_ACTION: UserActionPossibleArgs(restore, [1, 2], args),
-        UPDATE_HOST_NAMES_ACTION: UserActionPossibleArgs(update_host_names, [2], args, options)
-      }
+        UPDATE_HOST_NAMES_ACTION: UserActionPossibleArgs(update_host_names, [2], args, options),
+        PANGEA_SETUP_ACTION: UserAction(pangea_setup, options),
+        PANGEA_RESET_ACTION:UserAction(pangea_reset, options)
+  }
   return action_map
 
 
