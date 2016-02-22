@@ -2,16 +2,27 @@
 
 import json
 import socket
-from ambari_commons.os_utils import run_os_command, is_root
+
+from ambari_commons.exceptions import FatalException, NonFatalException
+from ambari_commons.os_utils import run_in_shell, run_os_command, is_root, is_valid_filepath
 from ambari_commons.logging_utils import set_verbose
+
+_VERBOSE = False
+
+def run_cmd(cmd, cwd=None):
+    retcode, out, err = run_in_shell(cmd, cwd=cwd)
+    if not retcode == 0:
+        err = 'Error:' + out + " : " + err
+        raise FatalException(1, err)
 
 class PangeaSetup(object):
 
     def __init__(self):
-        set_verbose(True):
+        set_verbose(_VERBOSE)
         if not is_root():
-            print "Need root permissions"
-            raise
+            err = "Need root permissions"
+            raise FatalException(1, err)
+
         self.bind_addr = self.getLocalAddress()
 
     def getConsulConf(self, bind_addr='0.0.0.0', join_addr='', is_bootstrap=False):
@@ -45,67 +56,109 @@ class PangeaSetup(object):
         return s.getsockname()[0]
 
     def setupResolv(self):
-        command = "echo \"" + \
-              "search node.consul cisco.com.node.consul node.dc1.consul cisco.com.node.dc1.consul\n" + \
-              "nameserver {}\n".format(self.bind_addr) + \
-              "\" > /etc/resolv.conf"
-        return command
+        command = [
+            'sed -i.pangea.old -e \'1isearch node.consul cisco.com.node.consul node.dc1.consul cisco.com.node.dc1.consul\\nnameserver {}\\n\' -e \'d\' /etc/resolv.conf'.format(self.bind_addr)
+            ]
+        return command, None
 
     def setupHosts(self):
-        command = "sed -i -e \"/`hostname`/c{}\\t`hostname`\\t`hostname -s`\" /etc/hosts".format(self.bind_addr) + \
-              " && " + \
-              "[ -f /etc/cloud/cloud.cfg.d/10_etc_hosts.cfg ] && sudo sed -i -e \"/manage_etc_hosts/cmanage_etc_hosts: false\" /etc/cloud/cloud.cfg.d/10_etc_hosts.cfg || echo 0"
-        return command
+        command = [
+            'sed -i.pangea.old -e \'/`hostname`/c{}\\t`hostname`\\t`hostname -s`\' /etc/hosts'.format(self.bind_addr)
+            ]
+        return command, None
+
+    def setupCloudInit(self):
+        if is_valid_filepath('/etc/cloud/cloud.cfg.d/10_etc_hosts.cfg'):
+            command = [
+                'sed -i.pangea.old -e \'/manage_etc_hosts/cmanage_etc_hosts: false\' /etc/cloud/cloud.cfg.d/10_etc_hosts.cfg'
+                ]
+        else:
+            command = [
+                'echo 0'
+                ]
+        return command, None
+
+    def setupConsulRepo(self):
+        command = [
+            'curl -O http://128.107.33.156/repo/7/ambari/2.2.0/RPMS/ambari.repo'
+            ]
+        return command, '/etc/yum.repos.d'
 
     def setupConsul(self):
-        command = "pushd /etc/yum.repos.d &&" \
-              "curl -O http://128.107.33.156/repo/7/ambari/2.2.0/RPMS/ambari.repo && " \
-              "popd && " \
-              "yum install -y consul consul-ui"
-        return command
+        command = [
+            'yum install -y consul consul-ui'
+            ]
+        return command, None
 
     def setupConsulConf(self):
-        command = "echo '{}'".format(self.getConsulConf(self.bind_addr, is_bootstrap=True)) + \
-            " > /etc/consul/consul.json && systemctl consul.service restart"
-        return command
+        fname = '/etc/consul/consul.json'
+        with open(fname, 'w') as fp:
+            fp.write(self.getConsulConf(self.bind_addr, is_bootstrap=True))
+            fp.close()
+
+        command = 'echo 0'
+        return command, None
 
     def setupConsulDnsmasq(self):
-        command = "echo \"" + \
-              "server=/consul/127.0.0.1#8600\n" + \
-              "server=/consul/{}/127.0.0.1#8600\n".format(self.reverse_net_ptr(self.bind_addr)) + \
-              "\" > /etc/dnsmasq.d/10-consul"
-        return command
+        fname = '/etc/dnsmasq.d/10-consul'
+        with open(fname, 'w') as fp:
+            fp.write("server=/consul/127.0.0.1#8600\n" + \
+                     "server=/consul/{}/127.0.0.1#8600\n".format(self.reverse_net_ptr(self.bind_addr)))
+            fp.close()
+        command = 'echo 0'
+        return command, None
 
     def setupDnsmasqDefault(self):
-        command = "echo \"" + \
-              "server=8.8.8.8\n" + \
-              "server=8.8.4.4\n" + \
-              "\" > /etc/dnsmasq.d/00-default"
-        return command
+        fname = '/etc/dnsmasq.d/00-default'
+        with open(fname, 'w') as fp:
+            fp.write("server=8.8.8.8\nserver=8.8.4.4\n")
+            fp.close()
+        command = 'echo 0'
+        return command, None
 
-    def setupDnsmasq(bind_addr):
-        command = "sed \'/^interface/d;/^listen_address/d;/^listen-address/d;$alisten-address={}\' /etc/dnsmasq.conf".format(bind_addr) + \
-              " && service dnsmasq restart && sleep 15"
-        return command
+    def setupDnsmasq(self):
+        command = [
+            'sed -i.pangea.old -e \'/^interface/d;/^listen_address/d;/^listen-address/d;$alisten-address={}\' /etc/dnsmasq.conf'.format(self.bind_addr)
+            ]
+        return command, None
 
     def setupNM(self):
-        command = "echo \"dns=none\n\" >> /etc/NetworkManager.conf"
-        return command
+        command = [
+            'sed -i.pangea.old -e \'/\[main\]/adns=none\' /etc/NetworkManager/NetworkManager.conf'
+            ]
+        return command, None
 
     def setupNMiface(self):
-        command = "find /etc/sysconfig/network-scripts/ifcfg-eth? " + \
-              "-exec sed -i.pangea 's/^PEERDNS=.*$/PEERDNS=\"no\"/' {} \;"
-        return command
+        command = [
+            'find /etc/sysconfig/network-scripts/ifcfg-eth? -exec sed -i.pangea.old \'s/^PEERDNS=.*$/PEERDNS=\"no\"/\' {} \;'
+            ]
+        return command, None
 
     def updateLibRequests(self):
-        command = "sudo easy_install -U requests"
-        return command
+        return ['easy_install -U requests'], None
+
+    def restartConsul(self):
+        return ['systemctl consul.service restart'], None
+
+    def restartDnsmasq(self):
+        return ['systemctl dnsmasq.service restart'], None
+
+    def startConsul(self):
+        return ['systemctl consul.service start'], None
+
+    def stopConsul(self):
+        return ['systemctl consul.service stop'], None
+
+    def resetConsul(self):
+        return [ 'rm -rf /var/lib/consul/*' ], None
 
     def deploy(self):
-        commands = [
+        cmds = [
             self.updateLibRequests(),
             self.setupResolv(),
             self.setupHosts(),
+            self.setupCloudInit(),
+            self.setupConsulRepo(),
             self.setupConsul(),
             self.setupConsulConf(),
             self.setupConsulDnsmasq(),
@@ -113,23 +166,20 @@ class PangeaSetup(object):
             self.setupDnsmasq(),
             self.setupNM(),
             self.setupNMiface(),
+            self.restartConsul(),
+            self.restartDnsmasq()
         ]
-        for cmd in commands:
-            print '### running '
-            run_os_command(cmd)
-
-    def resetConsul(self):
-        command = "systemctl stop consul.service && " + \
-            "rm -rf /var/lib/consul/* && " + \
-            "systemctl start consul.service && sleep 15 "
-        return command
+        for cmd, cwd in cmds:
+            run_cmd(cmd, cwd=cwd)
 
     def reset(self):
-        commands = [
+        cmds = [
+            self.stopConsul(),
             self.resetConsul()
+            self.startConsul()
         ]
-        for cmd in commands:
-            run_os_command(cmd)
+        for cmd, cwd in cmds:
+            run_cmd(cmd, cwd=cwd)
 
 def pangea_setup(_options):
     p = PangeaSetup()
