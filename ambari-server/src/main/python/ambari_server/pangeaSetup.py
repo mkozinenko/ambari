@@ -3,10 +3,12 @@
 import json
 import socket
 from ambari_commons.os_utils import run_os_command, is_root
+from ambari_commons.logging_utils import set_verbose
 
 class PangeaSetup(object):
 
     def __init__(self):
+        set_verbose(True):
         if not is_root():
             print "Need root permissions"
             raise
@@ -113,6 +115,7 @@ class PangeaSetup(object):
             self.setupNMiface(),
         ]
         for cmd in commands:
+            print '### running '
             run_os_command(cmd)
 
     def resetConsul(self):
