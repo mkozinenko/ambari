@@ -175,7 +175,7 @@ class PangeaSetup(object):
     def reset(self):
         cmds = [
             self.stopConsul(),
-            self.resetConsul()
+            self.resetConsul(),
             self.startConsul()
         ]
         for cmd, cwd in cmds:
