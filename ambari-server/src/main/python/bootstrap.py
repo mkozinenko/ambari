@@ -933,7 +933,7 @@ class BootstrapDefault(Bootstrap):
 
         action_queue.extend([
             self.deployConsul,
-            self.deployHelpers,
+            # self.deployHelpers,
             self.updateLibRequests,
             self.deployPackages
         ])
