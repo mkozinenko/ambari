@@ -16,7 +16,7 @@
 * limitations under the License.
 -->
 <div class="left-navbar" xmlns="http://www.w3.org/1999/html">
-  <div class="panel panel-default">
+  <div class="panel panel-default well well-sm-sm">
     <div class="panel-heading"><span class="glyphicon glyphicon-cloud"></span> Clusters</div>
     <div class="panel-body">
       <div class="cluster-section" ng-show="cluster">
@@ -77,7 +77,7 @@
     </div>
   </div>
 
-  <div class="panel panel-default">
+  <div class="panel panel-default well well-sm-sm">
     <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Views</div>
     <div class="panel-body">
       <ul class="nav nav-pills nav-stacked">
@@ -86,15 +86,14 @@
     </div>
   </div>
 
-  <div class="panel panel-default">
+  <div class="panel panel-default well well-sm-sm">
     <div class="panel-heading"><span class="glyphicon glyphicon-user"></span> User + Group Management</div>
     <div class="panel-body">
       <ul class="nav nav-pills nav-stacked">
         <li ng-class="{active: isActive('users.list')}"><link-to route="users.list" class="userslist-link">Users</link-to></li>
         <li ng-class="{active: isActive('groups.list')}"><link-to route="groups.list" class="groupslist-link">Groups</link-to></li>
       </ul>
-        
+
     </div>
   </div>
 </div>
-  

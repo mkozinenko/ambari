@@ -97,7 +97,7 @@
   -webkit-transform: rotateX(0deg);
   -ms-transform: rotateX(0deg);
   -o-transform: rotateX(0deg);
-  transform: rotateX(0deg); 
+  transform: rotateX(0deg);
 }
 .editable-list-container .actions-panel.ng-hide{
   -webkit-transform: rotateX(90deg);
@@ -468,7 +468,7 @@ a.gotoinstance{
   display: block;
   float: left;
   text-decoration: none;
-  
+
 }
 #top-nav .navbar.navbar-static-top .brand.cluster-name{
   margin-left: 10px;
@@ -484,7 +484,7 @@ a.gotoinstance{
 }
 .create-view-form .description h4 span{
   font-weight: normal;
-  
+
 }
 .create-view-form .view-header{
 }
@@ -550,7 +550,7 @@ a.gotoinstance{
   top: 5px;
   right: 50px;
   z-index: 10;
-} 
+}
 .views-list-pane .search-container .close{
   right: 50px;
   top: 5px;
@@ -1106,7 +1106,7 @@ button.btn.btn-xs{
   -ms-transform: translateX(1000px);
   -o-transform: translateX(1000px);
   transform: translateX(1000px);
-  
+
   padding: 0;
   margin: 0;
   max-height: 0;
@@ -1230,15 +1230,15 @@ button.btn.btn-xs{
 }
 
 @-webkit-keyframes stretchdelay {
-  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
   20% { -webkit-transform: scaleY(1.0) }
 }
 
 @keyframes stretchdelay {
-  0%, 40%, 100% { 
+  0%, 40%, 100% {
     transform: scaleY(0.4);
     -webkit-transform: scaleY(0.4);
-  }  20% { 
+  }  20% {
     transform: scaleY(1.0);
     -webkit-transform: scaleY(1.0);
   }
@@ -1330,4 +1330,8 @@ accordion .panel-group .panel{
   padding-left: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.well-sm-sm{
+  padding: 0 !important;
 }
