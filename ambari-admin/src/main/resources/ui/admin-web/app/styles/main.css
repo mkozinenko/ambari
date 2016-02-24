@@ -21,16 +21,16 @@
 /*
   ------ START editable-list DIRECTIVE SECTION ------ -
 */
-.editable-list-container.well{
+.editable-list-container.pane{
   padding: 10px;
   position: relative;
   margin-bottom: 25px;
   cursor: pointer;
 }
-.editable-list-container.well.edit-mode{
+.editable-list-container.pane.edit-mode{
   cursor: default;
 }
-.editable-list-container.well.disabled{
+.editable-list-container.pane.disabled{
   background: white;
 }
 
@@ -79,10 +79,10 @@
 .editable-list-container .actions-panel{
   position: absolute;
   right: 5px;
-  bottom: -30px;
+  bottom: 5px;
   padding: 2px 5px 5px 5px;
-  background: #f5f5f5;
-  border: 1px solid #e3e3e3;
+  /*background: #f5f5f5;
+  border: 1px solid #e3e3e3;*/
   border-top: none;
   border-radius: 0 0 4px 4px;
 
