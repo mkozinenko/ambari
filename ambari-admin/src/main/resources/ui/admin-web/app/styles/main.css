@@ -415,7 +415,10 @@ hr{
   margin: 0 !important;
 }
 .left-navbar a{
-  color: #ff5722 !important;
+  color: #444 !important;
+}
+.left-navbar .active a {
+  color: #fff !important;
 }
 .breadcrumb a{
   color: #ff5722 !important;
@@ -423,6 +426,9 @@ hr{
 .pagination .active a{
   background-color: #ff5722 !important;
   border-color: #ff5722 !important;
+}
+.dropdown-menu li a:hover{
+  color: #333 !important;
 }
 /*
   Style topnav menu
@@ -444,9 +450,10 @@ a img{
 }
 .caret{
   margin-left: 3px !important;
+  color: #ffffff !important;
 }
 .navbar-views-dropdown > a{
-  color: #c3c3c3;
+  color: #ffffff;
   font-size: 1.3em;
   padding: 10px 25px 18px;
   display: block;
@@ -574,7 +581,7 @@ a img{
   margin: 0;
 }
 .left-navbar .panel-body li.active a{
-  background: #795548;
+  background: #808080;
 }
 
 .search-container{
