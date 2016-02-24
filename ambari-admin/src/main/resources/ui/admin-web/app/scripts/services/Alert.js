@@ -19,7 +19,7 @@
 
 angular.module('ambariAdminConsole')
 .factory('Alert', [function() {
-  
+
   var hideTimeout = null;
   var $boxContainer = null;
   var removingTimeout = null;
