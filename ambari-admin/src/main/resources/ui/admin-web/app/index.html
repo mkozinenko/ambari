@@ -19,11 +19,16 @@
 <html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title>Ambari</title>
+    <title>Pangea</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="/img/logo.png" type="image/x-icon">
+
+    <!-- Material Design fonts -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link rel="shortcut icon" href="img/pangea-logo-1.png" type="image/x-icon">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
     <!-- build:css styles/vendor.css -->
@@ -31,6 +36,8 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/angular-bootstrap-toggle-switch/style/bootstrap3/angular-toggle-switch-bootstrap-3.css" />
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/ripples.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -48,8 +55,10 @@
       <header class="navbar navbar-static-top navbar-inverse">
         <div class="navbar-inner">
           <div class="container">
-            <a href="/#/main/dashboard" class="logo"><img src="/img/logo-white.png" alt="Apache Ambari" title="Apache Ambari"></a>
-            <a href="/#/main/dashboard" class="brand" title="Apache Ambari">Ambari</a>
+            <div class="logo">
+              <a href="/#/main/dashboard" class="logo"><img src="img/pangea-logo-1.png" alt="Pangea" title="Pangea"></a>
+              <a href="/#/main/dashboard" class="brand" title="Pangea">Pangea</a>
+            </div>
             <ul class="nav navbar-nav navbar-right">
               <li>
                 <div class="btn-group navbar-views-dropdown" dropdown is-open="viewsdropdown.isopen" ng-mouseover="viewsdropdown.isopen=true" ng-mouseout="viewsdropdown.isopen=false">
@@ -62,7 +71,7 @@
               </li>
               <li>
                 <div class="btn-group" dropdown is-open="status.isopen">
-                  <button type="button" class="btn btn-default dropdown-toggle navbar-btn" ng-disabled="disabled">
+                  <button type="button" class="btn btn-warning dropdown-toggle navbar-btn" ng-disabled="disabled">
                     <i class="fa fa-user"></i> {{currentUser}} <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu" role="menu">
@@ -73,7 +82,7 @@
                 </div>
               </li>
             </ul>
-          </div>        
+          </div>
         </div>
       </header>
     </div>
@@ -84,13 +93,13 @@
         <div class="col-sm-3">
           <div ng-include="'views/leftNavbar.html'" ng-controller="NavbarCtrl"></div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9 well well-sm">
           <ng-view></ng-view>
         </div>
       </div>
     </div>
 
-    
+
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>

@@ -59,8 +59,8 @@ gulp.task('views', function () {
 });
 
 gulp.task('images', function () {
-  return gulp.src('app/images/**/*')
-    .pipe(gulp.dest('dist/images'))
+  return gulp.src('app/img/**/*')
+    .pipe(gulp.dest('dist/img'))
     .pipe($.size());
 });
 
