@@ -135,7 +135,7 @@ class PangeaSetup(object):
         return command, None
 
     def updateLibRequests(self):
-        return ['easy_install -U requests'], None
+        return ['/usr/bin/easy_install -U requests'], None
 
     def restartConsul(self):
         return ['systemctl consul.service restart'], None
