@@ -39,7 +39,7 @@
     <skipTests>false</skipTests>
     <agent.install.dir>/usr/lib/python2.6/site-packages/ambari_agent</agent.install.dir>
     <ambari_commons.install.dir>/usr/lib/ambari-agent/lib/ambari_commons</ambari_commons.install.dir>
-    <ambari_mesos.install.dir>/usr/lib/ambari-agent/lib/ambari_mesos</ambari_mesos.install.dir>
+    <ambari_mesos.install.dir>/usr/lib/python2.7/site-packages/ambari_mesos</ambari_mesos.install.dir>
     <resource_management.install.dir>/usr/lib/ambari-agent/lib/resource_management</resource_management.install.dir>
     <jinja.install.dir>/usr/lib/ambari-agent/lib/ambari_jinja2</jinja.install.dir>
     <simplejson.install.dir>/usr/lib/ambari-agent/lib/ambari_simplejson</simplejson.install.dir>
