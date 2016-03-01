@@ -668,6 +668,28 @@ var urls = {
     //'mock': '/data/configurations/quicklinks_services.json'
   },
 
+  /*************************CONFIG GET SERVICE UPDATE****************************************/
+
+  'configs.getserviceupdateversion': {
+    'real': '/api/v1/update',
+    'mock': '/data/service-update.json'
+  },
+
+  /*************************CONFIG SERVICE UPDATE****************************************/
+
+  'configs.updateserviceversion': {
+    'real': '/api/v1/update',
+    'mock': '',
+    'type': 'PUT',
+    'format': function(data) {
+      return {
+        data: JSON.stringify({
+          id: data.id
+        })
+      };
+    }
+  },
+
   /*************************CONFIG GROUPS***************************************/
 
   'configs.config_groups.load.all': {
@@ -2869,6 +2891,7 @@ var ajax = Em.Object.extend({
     }
 
     var opt = {};
+
     if (!urls[config.name]) {
       console.warn('Invalid name provided!');
       return null;
@@ -2894,6 +2917,7 @@ var ajax = Em.Object.extend({
       }
     };
     opt.error = function (request, ajaxOptions, error) {
+
       var KDCErrorMsg = this.getKDCErrorMgs(request);
       if (!Em.isNone(KDCErrorMsg)) {
         this.defaultErrorKDCHandler(opt, KDCErrorMsg);
@@ -2919,6 +2943,7 @@ var ajax = Em.Object.extend({
     if ($.mocho) {
       opt.url = 'http://' + $.hostName + opt.url;
     }
+
     return $.ajax(opt);
   },
 

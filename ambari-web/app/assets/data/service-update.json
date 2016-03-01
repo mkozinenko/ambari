@@ -1,0 +1,1 @@
+{"role":[{"id":"MESOS","version":"2.1.3","description":"1","updatable":true},{"id":"MARATHON","version":"2.2.5","description":"2","updatable":true},{"id":"HDFS","version":"2.5.0","description":"3","updatable":true},{"id":"HIVE","version":"0.14","description":"4","updatable":true}]}
