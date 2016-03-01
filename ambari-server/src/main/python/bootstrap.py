@@ -888,9 +888,9 @@ class BootstrapDefault(Bootstrap):
                   params.bootdir, self.host_log)
         retcode10 = ssh.run()
 
-        command = "sudo systemctl enable consul.service && " \
+        command = "sudo systemctl stop consul.service && " \
                   "sudo rm -fR /var/lib/consul/* && " \
-                  "sudo systemctl restart consul.service && " \
+                  "sudo systemctl start consul.service && " \
                   "sudo systemctl restart dnsmasq.service"
         ssh = SSH(params.user, params.sshkey_file, self.host, command,
                   params.bootdir, self.host_log)
