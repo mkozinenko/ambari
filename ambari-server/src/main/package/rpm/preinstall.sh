@@ -22,6 +22,8 @@ COMMON_SERVICES_FOLDER_OLD=/var/lib/ambari-server/resources/common-services_$(da
 AMBARI_VIEWS_FOLDER="/var/lib/ambari-server/resources/views"
 AMBARI_VIEWS_BACKUP_FOLDER="$AMBARI_VIEWS_FOLDER/backups"
 
+AMBARI_SERVICE_UPDATE_FILE="/var/lib/ambari-server/resources/common-services/roles_update.cfg"
+
 if [ -d "/etc/ambari-server/conf.save" ]
 then
     mv /etc/ambari-server/conf.save /etc/ambari-server/conf_$(date '+%d_%m_%y_%H_%M').save
@@ -45,6 +47,11 @@ fi
 if [ -d "$AMBARI_VIEWS_FOLDER" ] && [ -d "$AMBARI_VIEWS_BACKUP_FOLDER" ]
 then
     cp -u $AMBARI_VIEWS_FOLDER/*.jar $AMBARI_VIEWS_BACKUP_FOLDER/
+fi
+
+if [ ! -f "AMBARI_SERVICE_UPDATE_FILE" ]
+then
+    cp -u "AMBARI_SERVICE_UPDATE_FILE" /etc/ambari-server/conf/
 fi
 
 exit 0
