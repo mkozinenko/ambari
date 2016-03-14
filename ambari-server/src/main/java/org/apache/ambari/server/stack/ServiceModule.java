@@ -35,12 +35,17 @@ import org.apache.ambari.server.state.PropertyInfo;
 import org.apache.ambari.server.state.ServiceInfo;
 import org.apache.ambari.server.state.ThemeInfo;
 import org.apache.ambari.server.state.QuickLinksConfigurationInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Service module which provides all functionality related to parsing and fully
  * resolving services from the stack definition.
  */
 public class ServiceModule extends BaseModule<ServiceModule, ServiceInfo> implements Validable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ServiceModule.class);
+
     /**
      * Corresponding service info
      */
@@ -124,7 +129,7 @@ public class ServiceModule extends BaseModule<ServiceModule, ServiceInfo> implem
         populateComponentModules();
         populateConfigurationModules();
         populateThemeModules();
-        populateQuickLinksConfigurationModules();
+//        populateQuickLinksConfigurationModules();
     }
 
     @Override
@@ -188,6 +193,11 @@ public class ServiceModule extends BaseModule<ServiceModule, ServiceInfo> implem
         if (serviceInfo.getWidgetsDescriptorFile() == null) {
             serviceInfo.setWidgetsDescriptorFile(parent.getWidgetsDescriptorFile());
         }
+
+        LOG.info("parentModule -> "+parentModule);
+        LOG.info("allStacks -> "+allStacks);
+        LOG.info("commonServices -> "+commonServices);
+        LOG.info("getQuickLinksConfigurationsMa -> "+serviceInfo.getQuickLinksConfigurationsMap().toString());
 
         mergeCustomCommands(parent.getCustomCommands(), serviceInfo.getCustomCommands());
         mergeConfigDependencies(parent);
@@ -339,14 +349,16 @@ public class ServiceModule extends BaseModule<ServiceModule, ServiceInfo> implem
 
     }
 
-    private void populateQuickLinksConfigurationModules() {
+    public void populateQuickLinksConfigurationModules() {
         if (serviceInfo.getQuickLinksConfigurationsDir() == null) {
             serviceInfo.setQuickLinksConfigurationsDir(AmbariMetaInfo.SERVICE_QUICKLINKS_CONFIGURATIONS_FOLDER_NAME);
         }
 
         String quickLinksConfigurationsDir = serviceDirectory.getAbsolutePath() + File.separator + serviceInfo.getQuickLinksConfigurationsDir();
 
+        LOG.info("serviceInfo.getQuickLinksConfigurations()u != null"+serviceInfo.getQuickLinksConfigurations());
         if (serviceInfo.getQuickLinksConfigurations() != null) {
+            LOG.info("serviceInfo.getQuickLinksConfigurations()d != null"+serviceInfo.getQuickLinksConfigurations());
             for (QuickLinksConfigurationInfo quickLinksConfigurationInfo : serviceInfo.getQuickLinksConfigurations()) {
                 File file = new File(quickLinksConfigurationsDir + File.separator + quickLinksConfigurationInfo.getFileName());
 //                QuickLinksConfigurationModule module = new QuickLinksConfigurationModule(file, quickLinksConfigurationInfo, serviceInfo);
@@ -356,7 +368,7 @@ public class ServiceModule extends BaseModule<ServiceModule, ServiceInfo> implem
         }    //Not fail if quicklinks.json file contains errors
     }
 
-    private void mergeQuickLinksConfigurations(ServiceModule parent, Map<String, StackModule> allStacks,
+    public void mergeQuickLinksConfigurations(ServiceModule parent, Map<String, StackModule> allStacks,
                                                Map<String, ServiceModule> commonServices) throws AmbariException {
         Collection<QuickLinksConfigurationModule> mergedModules = mergeChildModules(allStacks, commonServices, quickLinksConfigurationModules, parent.quickLinksConfigurationModules);
 
@@ -365,6 +377,7 @@ public class ServiceModule extends BaseModule<ServiceModule, ServiceInfo> implem
             QuickLinksConfigurationInfo moduleInfo = mergedModule.getModuleInfo();
             if (!moduleInfo.isDeleted()) {
                 serviceInfo.getQuickLinksConfigurationsMap().put(moduleInfo.getFileName(), moduleInfo);
+                LOG.info("serviceInfo -> "+serviceInfo);
             } else {
                 serviceInfo.getQuickLinksConfigurationsMap().remove(moduleInfo.getFileName());
             }

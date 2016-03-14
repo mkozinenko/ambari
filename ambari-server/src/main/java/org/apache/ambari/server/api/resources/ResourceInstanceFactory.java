@@ -36,4 +36,6 @@ public interface ResourceInstanceFactory {
    * @return  a new resource instance of the specified type
    */
   public ResourceInstance createResource(Resource.Type type, Map<Resource.Type, String> mapIds);
+
+  public Map createResourceMap(Map<Resource.Type, String> mapIds);
 }

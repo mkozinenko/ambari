@@ -31,8 +31,30 @@ App.MainAdminStackServicesView = Em.View.extend({
    */
   services: function() {
     var services = App.supports.installGanglia ? App.StackService.find() : App.StackService.find().without(App.StackService.find('GANGLIA'));
+    var updates = App.ServiceUpdateVersion.find();
+    //@TODO clear 'alert' from ERROR (stack_and_update_controller.js -> init) and (updateServiceVersionSuccessCallback (here)) example 'doSaveRepoUrlsErrorCallback' here
+    // clear <td> & <th> 'update' (services.hbs)
+    //
     return services.map(function(s) {
       s.set('isInstalled', App.Service.find().someProperty('serviceName', s.get('serviceName')));
+      s.set('updatable', false);
+      s.set('updateVersion', 'none');
+      s.set('updateDescription', 'none');
+      s.set('updateStatus', 'not available');
+
+      updates.map(function(u) {
+        if (s.get('id') === u.get('id')) {
+          s.set('updatable', u.get('updatable'));
+          s.set('updateVersion', u.get('version'));
+          s.set('updateDescription', u.get('description'));
+        }
+      });
+
+      if(s.get('updatable') === true) {
+        s.set('updateStatus', 'available');
+      } else if (s.get('updatable') === false){
+        s.set('updateStatus', 'not available');
+      }
       return s;
     });
   }.property('App.router.clusterController.isLoaded'),
@@ -41,6 +63,49 @@ App.MainAdminStackServicesView = Em.View.extend({
     if (!App.get('stackVersionsAvailable')) {
       this.get('controller').loadRepositories();
     }
+  },
+
+  showServiceUpdateVersionPopup: function(service) {
+    var self = this;
+    App.ModalPopup.show({
+      header: Em.I18n.t('common.serviceVersionUpdate') + service.context.get('displayName'),
+      primary: Em.I18n.t('common.update'),
+      secondary: Em.I18n.t('common.cancel'),
+      onPrimary: function () {
+        self.updateServiceVersion(service);
+        this.hide();
+      },
+      bodyClass: Em.View.extend({
+        templateName: require('templates/main/admin/stack_upgrade/service_update_version_modal'),
+        serviceVersion: service.context.get('serviceVersion'),
+        updateVersion: service.context.get('updateVersion'),
+        updateDescription: service.context.get('updateDescription')
+      })
+    });
+  },
+
+  updateServiceVersion: function(service) {
+    var serviceId = service.context.get('serviceName');
+    service.context.set('updateStatus','updating');
+    App.ajax.send({
+      name: 'configs.updateserviceversion',
+      sender: this,
+      data: {
+        id: serviceId
+      },
+      success: 'updateServiceVersionSuccessCallback',
+      error: 'updateServiceVersionErrorCallback'
+    });
+  },
+
+  updateServiceVersionSuccessCallback: function(response) {
+    var serv = App.StackService.find().findProperty('id', params.id).set('updateStatus', 'update success');
+    alert(JSON.stringify(response));
+  },
+
+  updateServiceVersionErrorCallback: function(request, ajaxOptions, error, opt, params) {
+    var serv = App.StackService.find().findProperty('id', params.id).set('updateStatus', 'update error');
+    console.log('Failed on service version update.\nDetails: ' + JSON.stringify(request));
   },
 
   /**
@@ -88,7 +153,7 @@ App.MainAdminStackServicesView = Em.View.extend({
           });
           var cur_group = reposGroup.findProperty('name', group.name);
           if (!cur_group) {
-            var cur_group = Ember.Object.create({
+            cur_group = Ember.Object.create({
               name: group.name,
               repositories: []
             });
@@ -186,7 +251,7 @@ App.MainAdminStackServicesView = Em.View.extend({
         bodyClass: Em.View.extend({
           template: Em.Handlebars.compile('<div class="alert alert-success">{{{message}}}</div>')
         })
-      })
+      });
     }
   },
 
@@ -225,7 +290,7 @@ App.MainAdminStackServicesView = Em.View.extend({
         bodyClass: Em.View.extend({
           template: Em.Handlebars.compile('<div class="alert alert-warning">{{{message}}}</div>')
         })
-      })
+      });
     }
   },
 
@@ -254,6 +319,7 @@ App.MainAdminStackServicesView = Em.View.extend({
       error: 'doSaveRepoUrlsErrorCallback'
     });
   },
+
   /**
    * Check validation and Save the customized local urls
    */

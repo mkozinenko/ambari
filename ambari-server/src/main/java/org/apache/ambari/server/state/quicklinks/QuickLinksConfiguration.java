@@ -73,4 +73,12 @@ public class QuickLinksConfiguration {
         }
         return new ArrayList<Link>(mergedLinks.values());
     }
+
+    @Override
+    public String toString() {
+        return "QuickLinksConfiguration{" +
+                "protocol=" + protocol +
+                ", links=" + links +
+                '}';
+    }
 }

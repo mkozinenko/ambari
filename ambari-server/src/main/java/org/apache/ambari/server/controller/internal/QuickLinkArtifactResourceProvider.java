@@ -12,10 +12,16 @@ import org.apache.ambari.server.controller.spi.ResourceAlreadyExistsException;
 import org.apache.ambari.server.controller.spi.SystemException;
 import org.apache.ambari.server.controller.spi.UnsupportedPropertyException;
 import org.apache.ambari.server.controller.utilities.PropertyHelper;
+import org.apache.ambari.server.parallel.quicklinks.DynamicQuickLinks;
 import org.apache.ambari.server.state.QuickLinksConfigurationInfo;
 import org.apache.ambari.server.state.ServiceInfo;
 import org.apache.ambari.server.state.StackInfo;
+import org.apache.ambari.server.state.quicklinks.Links;
+import org.apache.ambari.server.state.quicklinks.QuickLinks;
+import org.apache.ambari.server.state.quicklinks.QuickLinksConfiguration;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,6 +43,8 @@ public class QuickLinkArtifactResourceProvider extends AbstractControllerResourc
     public static final String QUICKLINK_CONSUL_URL_PROPERTY_ID = PropertyHelper.getPropertyId("QuickLinkInfo", "consul_url");
     public static final String QUICKLINK_CONSUL_KEY_PROPERTY_ID = PropertyHelper.getPropertyId("QuickLinkInfo", "consul_key");
     public static final String QUICKLINK_DATA_PROPERTY_ID = PropertyHelper.getPropertyId("QuickLinkInfo", "quicklink_data");
+
+    private DynamicQuickLinks consulQuickLinks;
 
     /**
      * primary key fields
@@ -144,31 +152,58 @@ public class QuickLinkArtifactResourceProvider extends AbstractControllerResourc
             if (stackService == null) {
                 serviceInfoList.addAll(stackInfo.getServices());
             } else {
+                LOG.debug("stackService -> " + stackService);  // stackService -> MESOS
+
+                consulQuickLinks= new DynamicQuickLinks();
+
                 ServiceInfo service = stackInfo.getService(stackService);
                 if (service == null) {
                     throw new NoSuchParentResourceException(String.format(
                             "Parent stack/service resource doesn't exist: stackName='%s', stackVersion='%s', serviceName='%s'",
                             stackName, stackVersion, stackService));
                 }
+                LOG.debug("service -> " + service);    //service -> Service name:MESOS
+//                serviceInfoList.remove(service);
                 serviceInfoList.add(service);
+                LOG.info("serviceInfoList -> "+serviceInfoList);    // serviceQuickLinks -> [QuickLinksConfigurationInfo{deleted=false, fileName='quicklinks.json', consulUrl='http://lo...
             }
 
             for (ServiceInfo serviceInfo : serviceInfoList) {
                 List<QuickLinksConfigurationInfo> serviceQuickLinks = new ArrayList<QuickLinksConfigurationInfo>();
                 if (quickLinksFileName != null) {
                     LOG.debug("Getting quick links from service {}, quick links = {}", serviceInfo.getName(), serviceInfo.getQuickLinksConfigurationsMap());
+                    LOG.info("getQuickLinksConfigurationsMap -> "+serviceInfo.getQuickLinksConfigurationsMap());
+//                    serviceQuickLinks.remove(serviceInfo.getQuickLinksConfigurationsMap().get(quickLinksFileName));
                     serviceQuickLinks.add(serviceInfo.getQuickLinksConfigurationsMap().get(quickLinksFileName));
                 } else {
                     for (QuickLinksConfigurationInfo quickLinksConfigurationInfo : serviceInfo.getQuickLinksConfigurationsMap().values()) {
+                        LOG.info("quickLinksConfigurationInfo -> " + quickLinksConfigurationInfo);
+
+//                        QuickLinksConfiguration qlConf = new QuickLinksConfiguration();
+//                        qlConf.setLinks(consulQuickLinks.getQuickLinks(stackName, stackVersion, stackService).getLinks());
+//                        QuickLinks ql = new QuickLinks();
+//                        ql.setQuickLinksConfiguration(ql.getQuickLinksConfiguration());
+//                        LOG.info("mapQl0 - > "+ql);
+//                        Map<String, QuickLinks> mapQl = new HashMap<String, QuickLinks>();
+//                        mapQl.put("consul", ql);
+//                        LOG.info("mapQl1 - > "+mapQl);
+//                        quickLinksConfigurationInfo.setQuickLinksConfigurationMap(mapQl);
+//                        LOG.info("mapQl2 - > "+quickLinksConfigurationInfo);
+
                         if (quickLinksConfigurationInfo.getIsDefault()) {
+//                            serviceQuickLinks.remove(0);
                             serviceQuickLinks.add(0, quickLinksConfigurationInfo );
                         } else {
-                            serviceQuickLinks.add(quickLinksConfigurationInfo );
+//                            serviceQuickLinks.remove(quickLinksConfigurationInfo);
+                            serviceQuickLinks.add(quickLinksConfigurationInfo);
                         }
                     }
                 }
 
-                LOG.info("serviceQuickLinks -> "+serviceQuickLinks);
+                ////
+
+                ////
+                LOG.info("serviceQuickLinks -> " + serviceQuickLinks);
 
                 List<Resource> serviceResources = new ArrayList<Resource>();
                 for (QuickLinksConfigurationInfo quickLinksConfigurationInfo : serviceQuickLinks) {
@@ -186,7 +221,6 @@ public class QuickLinkArtifactResourceProvider extends AbstractControllerResourc
                 }
 
                 resources.addAll(serviceResources);
-
             }
         }
         LOG.info("resources -> "+ resources);

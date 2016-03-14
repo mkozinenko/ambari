@@ -29,6 +29,7 @@ require('mappers/repository_version_mapper');
 require('mappers/hosts_mapper');
 require('mappers/cluster_mapper');
 require('mappers/quicklinks_mapper');
+require('mappers/service_update_version_mapper');
 require('mappers/racks_mapper');
 require('mappers/users_mapper');
 require('mappers/service_mapper');

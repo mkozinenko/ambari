@@ -61,4 +61,13 @@ public class QuickLinks {
             quickLinksConfiguration.mergeWithParent(parent.quickLinksConfiguration);
         }
     }
+
+    @Override
+    public String toString() {
+        return "QuickLinks{" +
+                "description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                ", quickLinksConfiguration=" + quickLinksConfiguration +
+                '}';
+    }
 }
