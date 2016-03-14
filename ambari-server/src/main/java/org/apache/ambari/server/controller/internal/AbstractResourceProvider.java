@@ -184,6 +184,7 @@ public abstract class AbstractResourceProvider extends BaseProvider implements R
     // If the predicate specifies a unique resource then we can simply return a single
     // property map for the update.  Otherwise we need to do a get with the given predicate
     // to get the set of property maps for the resources that need to be updated.
+    LOG.debug("givenPredicate -> "+givenPredicate);
     if (specifiesUniqueResource(givenPredicate)) {
       Map<String, Object> propertyMap = new HashMap<String, Object>(PredicateHelper.getProperties(givenPredicate));
       propertyMap.putAll(requestPropertyMap);

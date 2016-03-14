@@ -27,8 +27,8 @@ public class QuickLinksConfigurationModule extends BaseModule<QuickLinksConfigur
 
     public static final String QUICKLINKS_CONFIGURATION_KEY = "QuickLinksConfiguration";
 
-    static {
-    }
+//    static {
+//    }
 
 
     private QuickLinksConfigurationInfo moduleInfo;

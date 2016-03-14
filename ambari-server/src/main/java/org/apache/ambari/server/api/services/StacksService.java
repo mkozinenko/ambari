@@ -18,18 +18,31 @@
 
 package org.apache.ambari.server.api.services;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import org.apache.ambari.server.AmbariException;
+import org.apache.ambari.server.AmbariService;
+import org.apache.ambari.server.configuration.Configuration;
+import org.apache.ambari.server.parallel.quicklinks.DynamicQuickLinks;
+import org.apache.ambari.server.stack.ServiceDirectory;
+import org.apache.ambari.server.stack.ServiceModule;
+import org.apache.ambari.server.stack.StackServiceDirectory;
+import org.apache.ambari.server.state.quicklinks.Links;
+import org.apache.ambari.server.state.quicklinks.QuickLinks;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nullable;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 
 import org.apache.ambari.server.api.resources.ResourceInstance;
 import org.apache.ambari.server.controller.spi.Resource;
@@ -39,6 +52,8 @@ import org.apache.ambari.server.controller.spi.Resource;
  */
 @Path("/stacks/")
 public class StacksService extends BaseService {
+
+    private static Logger LOG = LoggerFactory.getLogger(StacksService.class);
 
     @GET
     @Produces("text/plain")
@@ -151,9 +166,29 @@ public class StacksService extends BaseService {
                                                            @PathParam("serviceName") String serviceName,
                                                            @PathParam("quickLinksConfigurationName") String quickLinksConfigurationName) {
 
+        LOG.info("QL with configuration called");
+
+
         return handleRequest(headers, body, ui, Request.Type.GET,
                 createStackServiceQuickLinksResource(stackName, stackVersion, serviceName, quickLinksConfigurationName));
     }
+
+//    @GET
+//    @Path("{stackName}/versions/{stackVersion}/services/{serviceName}/quicklinks/{quickLinksConfigurationName}/test")
+//    @Produces("application/json")
+//    public Links getStackServiceQuickLinksConfiguration(String body, @Context HttpHeaders headers,
+//                                                           @Context UriInfo ui, @PathParam("stackName") String stackName,
+//                                                           @PathParam("stackVersion") String stackVersion,
+//                                                           @PathParam("serviceName") String serviceName) {
+//
+//        Map<String, QuickLinks> test = new HashMap<String, QuickLinks>();
+//        test.put("test", new QuickLinks());
+//
+//        DynamicQuickLinks dynamicDquickLinks = new DynamicQuickLinks();
+//
+//
+//        return dynamicDquickLinks.getQuickLinks(stackName, stackVersion);
+//    }
 
     @GET
     @Path("{stackName}/versions/{stackVersion}/artifacts")
@@ -496,6 +531,8 @@ public class StacksService extends BaseService {
         mapIds.put(Resource.Type.QuickLink, quickLinksConfigurationName);
 
         return createResource(Resource.Type.QuickLink, mapIds);
+//        return createResourceMap(mapIds);
     }
+
 }
 
