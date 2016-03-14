@@ -805,6 +805,7 @@ public class ServiceInfo implements Validable {
         }
         quickLinksConfigurationsMap = tmp;
 
+
         LOG.debug("quickLinksConfigurationsMap -> " + quickLinksConfigurationsMap);
 
         return quickLinksConfigurationsMap;
