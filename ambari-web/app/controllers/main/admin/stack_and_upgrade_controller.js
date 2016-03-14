@@ -210,6 +210,7 @@ App.MainAdminStackAndUpgradeController = Em.Controller.extend(App.LocalStorage, 
    * @type {String}
    */
   realRepoUrl: function () {
+
     return App.get('apiPrefix') + App.get('stackVersionURL') +
       '/compatible_repository_versions?fields=*,operating_systems/*,operating_systems/repositories/*';
   }.property('App.stackVersionURL'),
@@ -271,6 +272,7 @@ App.MainAdminStackAndUpgradeController = Em.Controller.extend(App.LocalStorage, 
 
   init: function () {
     this.initDBProperties();
+    this.getServiceUpdateVersion();
   },
 
   /**
@@ -283,6 +285,43 @@ App.MainAdminStackAndUpgradeController = Em.Controller.extend(App.LocalStorage, 
         this.set(k, props[k]);
       }
     }, this);
+  },
+
+  /**
+   * get version updates for services
+   */
+  isServiceUpdateVersionLoaded: false,
+
+  updatesCount: 0,
+
+  goToStackView: function() {
+    App.router.route('main/admin/stack');
+  },
+
+  getServiceUpdateVersion: function() {
+    App.ajax.send({
+      name: 'configs.getserviceupdateversion',
+      sender: this,
+      success: 'getServiceUpdateVersionSuccessCallback',
+      error: 'getServiceUpdateVersionErrorCallback'
+    });
+  },
+
+  getServiceUpdateVersionSuccessCallback: function(data) {
+    App.ServiceUpdateVersionMapper.map(data);
+    var updates = App.ServiceUpdateVersion.find();
+    var updatesCount = 0;
+    updates.map(function(u) {
+      if(u.get('updatable') === true) {
+        updatesCount++;
+      }
+    });
+    this.updatesCount = updatesCount;
+    this.isServiceUpdateVersionLoaded = true;
+  },
+
+  getServiceUpdateVersionErrorCallback: function(request, ajaxOptions, error, opt, params) {
+    console.log('Failed on loading services version updates.\nDetails: ' + JSON.stringify(request));
   },
 
   /**
@@ -1278,7 +1317,7 @@ App.MainAdminStackAndUpgradeController = Em.Controller.extend(App.LocalStorage, 
       stackVersionNumber = App.get('currentStackVersion');
     return stackVersionNumber;
   },
-  
+
   /**
    * perform validation if <code>skip<code> is  false and run save if
    * validation successfull or run save without validation is <code>skip<code> is true
@@ -1296,7 +1335,7 @@ App.MainAdminStackAndUpgradeController = Em.Controller.extend(App.LocalStorage, 
         var repoVersion = self.prepareRepoForSaving(repo);
         var stackVersionNumber = self.getStackVersionNumber(repo);
         console.log("Repository stack version:"+stackVersionNumber);
-        
+
         App.ajax.send({
           name: 'admin.stack_versions.edit.repo',
           sender: this,
@@ -1313,7 +1352,7 @@ App.MainAdminStackAndUpgradeController = Em.Controller.extend(App.LocalStorage, 
     });
     return deferred.promise();
   },
-  
+
   /**
    * send request for validation for each repository
    * @param {Em.Object} repo
@@ -1324,7 +1363,7 @@ App.MainAdminStackAndUpgradeController = Em.Controller.extend(App.LocalStorage, 
     var deferred = $.Deferred(),
       totalCalls = 0,
       invalidUrls = [];
-    
+
     if (skip) {
       deferred.resolve(invalidUrls);
     } else {

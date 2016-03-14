@@ -42,13 +42,36 @@ App.StackService = DS.Model.extend({
   serviceComponents: DS.hasMany('App.StackServiceComponent'),
   configs: DS.attr('array'),
   requiredServices: DS.attr('array'),
-
+  updatable: DS.attr('boolean'),
+  updateVersion: DS.attr('string'),
+  updateDescription: DS.attr('string'),
+  updateStatus: DS.attr('string'),
   /**
    * contains array of serviceNames that have configs that
    * depends on configs from current service
    * @type {String[]}
    */
   dependentServiceNames: DS.attr('array', {defaultValue: []}),
+
+  isUpdateAvailable: function () {
+    return this.get('updateStatus') === "available";
+  }.property('updateStatus'),
+
+  isUpdateNotAvailable: function () {
+    return this.get('updateStatus') === "not available";
+  }.property('updateStatus'),
+
+  isUpdating: function () {
+    return this.get('updateStatus') === "updating";
+  }.property('updateStatus'),
+
+  isUpdateSuccess: function () {
+    return this.get('updateStatus') === "update success";
+  }.property('updateStatus'),
+
+  isUpdateError: function () {
+    return this.get('updateStatus') === "update error";
+  }.property('updateStatus'),
 
   // Is the service a distributed filesystem
   isDFS: function () {

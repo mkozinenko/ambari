@@ -16,22 +16,13 @@
 * limitations under the License.
 }}
 
-<div class="well well-sm-sm">
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      {{#each column in view.columns}}
-      {{view column}}
-      {{/each}}
-    </tr>
-    </thead>
-    <tbody>
-    {{#each row in view.rows}}
-    {{view row}}
-    {{/each}}
-    </tbody>
-  </table>
-  {{#if view.pager}}
-    {{view view.pager}}
-  {{/if}}
+<div class="service-update-version">
+  <div class="content">
+      <p>{{t common.version}} : {{view.serviceVersion}}</p>
+      <p>{{t common.newVersion}} : {{view.updateVersion}}</p>
+      <br/>
+      {{t common.description}} :
+      <br/>
+      {{view.updateDescription}}
+  </div>
 </div>

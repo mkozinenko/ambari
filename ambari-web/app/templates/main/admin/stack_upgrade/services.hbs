@@ -23,6 +23,7 @@
       <th>{{t common.service}}</th>
       <th>{{t common.version}}</th>
       <th>{{t common.status}}</th>
+      <!-- <th>{{t common.update}}</th> -->
       <th>{{t common.description}}</th>
     </tr>
     </thead>
@@ -30,7 +31,27 @@
       {{#each service in view.services}}
       <tr>
         <td class="service-display-name">{{service.displayName}}</td>
-        <td class="service-stack-version">{{service.serviceVersion}}</td>
+        <td class="service-stack-version">{{service.serviceVersion}}
+          {{#if service.isUpdateAvailable}}
+            <a {{bindAttr class=":path-link view.isAddServiceAvailable::not-active-link"}} {{action showServiceUpdateVersionPopup service target="view"}}>
+              {{t common.update}}</a>
+          {{/if}}
+          {{#if service.service.isUpdateNotAvailable}}
+          {{/if}}
+          {{#if service.isUpdating}}
+            <div class="progress progress-striped progress-success active">
+              <div class="bar"></div>
+            </div>
+          {{/if}}
+          {{#if service.isUpdateSuccess}}
+            <span {{bindAttr class=":path-link view.isAddServiceAvailable::not-active-link"}}>
+              {{t common.success}}</span>
+          {{/if}}
+          {{#if service.isUpdateError}}
+            <span {{bindAttr class=":path-link view.isAddServiceAvailable::not-active-link"}}>
+              {{t common.error}}</span>
+          {{/if}}
+        </td>
         <td class="stack-version-state">
           {{#if service.isInstalled}}
             <span class="label label-success">{{t common.installed}}</span>
@@ -39,6 +60,14 @@
               {{t services.service.add}}</a>
           {{/if}}
         </td>
+        <!-- <td class="service-update">
+          {{#if service.isUpdateAvaliable}}
+            <a {{bindAttr class=":path-link view.isAddServiceAvailable::not-active-link"}} {{action goToAddService service.serviceName target="view"}}>
+              {{t common.update}}</a>
+          {{else}}
+            <span class="label label-success">{{t common.current}}</span>
+          {{/if}}
+        </td> -->
         <td class="service-description">{{{service.comments}}}</td>
       </tr>
       {{/each}}
