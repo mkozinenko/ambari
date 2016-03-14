@@ -1,0 +1,160 @@
+
+*****************************************************
+Summary
+-------
+Generated at: 2016-01-28T16:11:47+02:00
+Notes: 0
+Binaries: 14
+Archives: 0
+Standards: 109
+
+Apache Licensed: 109
+Generated Documents: 0
+
+JavaDocs are generated and so license header is optional
+Generated files do not required license headers
+
+0 Unknown Licenses
+
+*******************************
+
+Unapproved licenses:
+
+
+*******************************
+
+Archives:
+
+*****************************************************
+  Files with Apache License headers will be marked AL
+  Binary files (which do not require AL headers) will be marked B
+  Compressed archives will be marked A
+  Notices, licenses etc will be marked N
+  AL    docs/index.md
+  B     docs/instance_response.png
+  B     docs/ui.png
+  AL    examples/auto-cluster-view/docs/index.md
+  AL    examples/auto-cluster-view/pom.xml
+  AL    examples/auto-cluster-view/src/main/java/org/apache/ambari/view/examples/AutoClusterService.java
+  AL    examples/auto-cluster-view/src/main/resources/ui/index.html
+  AL    examples/auto-cluster-view/src/main/resources/view.xml
+  B     examples/calculator-view/docs/add.png
+  AL    examples/calculator-view/docs/index.md
+  B     examples/calculator-view/docs/usage.png
+  AL    examples/calculator-view/pom.xml
+  AL    examples/calculator-view/src/main/java/org/apache/ambari/view/proxy/CalculatorResource.java
+  AL    examples/calculator-view/src/main/resources/view.xml
+  AL    examples/cluster-view/docs/index.md
+  AL    examples/cluster-view/pom.xml
+  AL    examples/cluster-view/src/main/java/org/apache/ambari/view/cluster/ClusterConfigServlet.java
+  AL    examples/cluster-view/src/main/java/org/apache/ambari/view/cluster/ClusterConfigurationService.java
+  AL    examples/cluster-view/src/main/java/org/apache/ambari/view/cluster/PropertyService.java
+  AL    examples/cluster-view/src/main/java/org/apache/ambari/view/cluster/SettingService.java
+  AL    examples/cluster-view/src/main/resources/view.xml
+  AL    examples/cluster-view/src/main/resources/WEB-INF/web.xml
+  AL    examples/favorite-view/docs/index.md
+  AL    examples/favorite-view/pom.xml
+  AL    examples/favorite-view/src/main/java/org/apache/ambari/view/favorite/FavoriteService.java
+  AL    examples/favorite-view/src/main/resources/view.xml
+  B     examples/hello-servlet-view/docs/hello_1.png
+  B     examples/hello-servlet-view/docs/hello_2.png
+  AL    examples/hello-servlet-view/docs/index.md
+  AL    examples/hello-servlet-view/pom.xml
+  AL    examples/hello-servlet-view/src/main/java/org/apache/ambari/view/hello/HelloServlet.java
+  AL    examples/hello-servlet-view/src/main/resources/view.xml
+  AL    examples/hello-servlet-view/src/main/resources/WEB-INF/web.xml
+  AL    examples/hello-spring-view/docs/index.md
+  AL    examples/hello-spring-view/pom.xml
+  AL    examples/hello-spring-view/src/main/java/org/apache/ambari/view/hello/HelloController.java
+  AL    examples/hello-spring-view/src/main/resources/view.xml
+  AL    examples/hello-spring-view/src/main/webapp/WEB-INF/Hello-servlet.xml
+  AL    examples/hello-spring-view/src/main/webapp/WEB-INF/jsp/hello.jsp
+  AL    examples/hello-spring-view/src/main/webapp/WEB-INF/web.xml
+  B     examples/helloworld-view/docs/hello_world.png
+  AL    examples/helloworld-view/docs/index.md
+  AL    examples/helloworld-view/pom.xml
+  AL    examples/helloworld-view/src/main/resources/index.html
+  AL    examples/helloworld-view/src/main/resources/view.xml
+  AL    examples/phone-list-view/docs/index.md
+  B     examples/phone-list-view/docs/phone_1.png
+  B     examples/phone-list-view/docs/phone_2.png
+  B     examples/phone-list-view/docs/phone_3.png
+  B     examples/phone-list-view/docs/phone_4.png
+  B     examples/phone-list-view/docs/phone_5.png
+  AL    examples/phone-list-view/pom.xml
+  AL    examples/phone-list-view/src/main/java/org/apache/ambari/view/phonelist/PhoneListServlet.java
+  AL    examples/phone-list-view/src/main/java/org/apache/ambari/view/phonelist/PhoneUser.java
+  AL    examples/phone-list-view/src/main/resources/view.xml
+  AL    examples/phone-list-view/src/main/resources/WEB-INF/web.xml
+  AL    examples/pom.xml
+  AL    examples/property-validator-view/docs/index.md
+  AL    examples/property-validator-view/pom.xml
+  AL    examples/property-validator-view/src/main/java/org/apache/ambari/view/property/MyValidator.java
+  AL    examples/property-validator-view/src/main/java/org/apache/ambari/view/property/PropertyValidatorService.java
+  AL    examples/property-validator-view/src/main/resources/ui/index.html
+  AL    examples/property-validator-view/src/main/resources/view.xml
+  AL    examples/property-view/docs/index.md
+  AL    examples/property-view/pom.xml
+  AL    examples/property-view/src/main/java/org/apache/ambari/view/property/PropertyService.java
+  AL    examples/property-view/src/main/resources/ui/index.html
+  AL    examples/property-view/src/main/resources/view.xml
+  AL    examples/README.md
+  AL    examples/restricted-view/docs/index.md
+  AL    examples/restricted-view/pom.xml
+  AL    examples/restricted-view/src/main/java/org/apache/ambari/view/restricted/RestrictedResource.java
+  AL    examples/restricted-view/src/main/java/org/apache/ambari/view/restricted/UnrestrictedResource.java
+  AL    examples/restricted-view/src/main/resources/view.xml
+  AL    examples/simple-view/docs/index.md
+  AL    examples/simple-view/pom.xml
+  AL    examples/simple-view/src/main/java/org/apache/ambari/view/simple/SimpleService.java
+  AL    examples/simple-view/src/main/resources/ui/index.html
+  AL    examples/simple-view/src/main/resources/view.xml
+  AL    examples/weather-view/docs/index.md
+  B     examples/weather-view/docs/paloalto.png
+  B     examples/weather-view/docs/weather.png
+  AL    examples/weather-view/pom.xml
+  AL    examples/weather-view/src/main/java/org/apache/ambari/view/weather/CityResource.java
+  AL    examples/weather-view/src/main/java/org/apache/ambari/view/weather/CityResourceProvider.java
+  AL    examples/weather-view/src/main/java/org/apache/ambari/view/weather/CityService.java
+  AL    examples/weather-view/src/main/java/org/apache/ambari/view/weather/WeatherServlet.java
+  AL    examples/weather-view/src/main/resources/view.xml
+  AL    examples/weather-view/src/main/resources/WEB-INF/web.xml
+  AL    pom.xml
+  AL    src/main/assemblies/views.xml
+  AL    src/main/java/org/apache/ambari/view/AmbariStreamProvider.java
+  AL    src/main/java/org/apache/ambari/view/cluster/Cluster.java
+  AL    src/main/java/org/apache/ambari/view/DataStore.java
+  AL    src/main/java/org/apache/ambari/view/events/Event.java
+  AL    src/main/java/org/apache/ambari/view/events/Listener.java
+  AL    src/main/java/org/apache/ambari/view/HttpImpersonator.java
+  AL    src/main/java/org/apache/ambari/view/ImpersonatorSetting.java
+  AL    src/main/java/org/apache/ambari/view/Masker.java
+  AL    src/main/java/org/apache/ambari/view/MaskException.java
+  AL    src/main/java/org/apache/ambari/view/NoSuchResourceException.java
+  AL    src/main/java/org/apache/ambari/view/PersistenceException.java
+  AL    src/main/java/org/apache/ambari/view/ReadRequest.java
+  AL    src/main/java/org/apache/ambari/view/ResourceAlreadyExistsException.java
+  AL    src/main/java/org/apache/ambari/view/ResourceProvider.java
+  AL    src/main/java/org/apache/ambari/view/SecurityException.java
+  AL    src/main/java/org/apache/ambari/view/SystemException.java
+  AL    src/main/java/org/apache/ambari/view/UnsupportedPropertyException.java
+  AL    src/main/java/org/apache/ambari/view/URLConnectionProvider.java
+  AL    src/main/java/org/apache/ambari/view/URLStreamProvider.java
+  AL    src/main/java/org/apache/ambari/view/validation/ValidationResult.java
+  AL    src/main/java/org/apache/ambari/view/validation/Validator.java
+  AL    src/main/java/org/apache/ambari/view/View.java
+  AL    src/main/java/org/apache/ambari/view/ViewContext.java
+  AL    src/main/java/org/apache/ambari/view/ViewController.java
+  AL    src/main/java/org/apache/ambari/view/ViewDefinition.java
+  AL    src/main/java/org/apache/ambari/view/ViewInstanceDefinition.java
+  AL    src/main/java/org/apache/ambari/view/ViewResourceHandler.java
+  AL    src/main/resources/view.xsd
+  AL    src/test/java/org/apache/ambari/view/NoSuchResourceExceptionTest.java
+  AL    src/test/java/org/apache/ambari/view/ResourceAlreadyExistsExceptionTest.java
+  AL    src/test/java/org/apache/ambari/view/UnsupportedPropertyExceptionTest.java
+  AL    src/test/java/org/apache/ambari/view/ViewXmlTest.java
+ 
+*****************************************************
+ Printing headers for files without AL header...
+ 
+ 
