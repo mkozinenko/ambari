@@ -714,7 +714,7 @@ class BootstrapDefault(Bootstrap):
     def saveConsulConf(self, target, bind_addr, join_addr, is_server=False):
         import json
         consulConf = {
-            'server': self.is_consul_server,
+            'server': is_server,
             'data_dir': '/var/lib/consul',
             'log_level': 'INFO',
             'bind_addr': bind_addr,
@@ -820,7 +820,7 @@ class BootstrapDefault(Bootstrap):
 
         tmpfd, tmpConsulConfig = mkstemp('.consul.json')
 
-        self.saveConsulConf(tmpConsulConfig, bind_addr, join_addr, is_server)
+        self.saveConsulConf(tmpConsulConfig, bind_addr, join_addr, self.is_consul_server)
         scp = SCP(params.user, params.sshkey_file, self.host, tmpConsulConfig,
                   tmpConsulConfig, params.bootdir, self.host_log)
         retcode2 = scp.run()
