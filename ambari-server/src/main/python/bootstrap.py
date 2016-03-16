@@ -188,19 +188,9 @@ class Bootstrap(threading.Thread):
     SETUP_SCRIPT_FILENAME = "setupAgent.py"
     AMBARI_REPO_FILENAME = "ambari"
 
-    def parse_host(self, s):
-        try:
-            t = tuple(s.split(':'))
-            if len(t) == 2:
-                return t[0], t[1] in ('TRUE', 'True', 'true', 'Y', 'y', 'Yes', 'YES')
-            else:
-                return s, False
-        except Exception:
-            return s, False
-
     def __init__(self, host, shared_state):
         threading.Thread.__init__(self)
-        self.host, self.is_consul_server = self.parse_host(host)
+        self.host = host
         self.shared_state = shared_state
         self.status = {
             "start_time": None,
@@ -711,10 +701,10 @@ class BootstrapDefault(Bootstrap):
         self.host_log.write("\n")
         return retcode
 
-    def saveConsulConf(self, target, bind_addr, join_addr, is_server=False):
+    def saveConsulConf(self, target, bind_addr, join_addr):
         import json
         consulConf = {
-            'server': is_server,
+            'server': True,
             'data_dir': '/var/lib/consul',
             'log_level': 'INFO',
             'bind_addr': bind_addr,
@@ -810,6 +800,10 @@ class BootstrapDefault(Bootstrap):
 
         self.host_log.write("==========================\n")
         self.host_log.write("Running Consul deploy procedure...")
+        # command = "pushd /etc/yum.repos.d &&" \
+        #           "sudo curl -O https://copr.fedorainfracloud.org/coprs/duritong/consul/repo/epel-7/duritong-consul-epel-7.repo && " \
+        #           "popd && " \
+        #           "sudo yum install -y consul"
         command = "pushd /etc/yum.repos.d &&" \
                   "sudo curl -O http://128.107.33.156/repo/7/ambari/2.2.0/RPMS/ambari.repo && " \
                   "popd && " \
@@ -820,7 +814,7 @@ class BootstrapDefault(Bootstrap):
 
         tmpfd, tmpConsulConfig = mkstemp('.consul.json')
 
-        self.saveConsulConf(tmpConsulConfig, bind_addr, join_addr, self.is_consul_server)
+        self.saveConsulConf(tmpConsulConfig, bind_addr, join_addr)
         scp = SCP(params.user, params.sshkey_file, self.host, tmpConsulConfig,
                   tmpConsulConfig, params.bootdir, self.host_log)
         retcode2 = scp.run()
@@ -1057,7 +1051,7 @@ def main(argv=None):
 
     #Parse the input
     hostList = onlyargs[0].split(",")
-    bootdir = onlyargs[1]
+    bootdir =  onlyargs[1]
     user = onlyargs[2]
     sshkey_file = onlyargs[3]
     setupAgentFile = onlyargs[4]
